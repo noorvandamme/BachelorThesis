@@ -17,6 +17,10 @@
         <button id="connectButton">Connect</button>
       </div>
       <div id="connected" style="display: none;">
+        <div>Connected</div>
+        <div id="irSensorState" style="margin-top: 20px; font-size: 20px; color: blue;">
+          Waiting for IR sensor data...
+        </div>
       </div>
     </div>
   </div>
@@ -32,6 +36,7 @@
     const $connected = document.getElementById("connected");
 
     const $connectButton = document.getElementById("connectButton");
+    const $irSensorState = document.getElementById("irSensorState");
 
     const arduinoInfo = {
       usbProductId: 32823,
@@ -143,6 +148,58 @@
         }
       }
     };
+
+    let sensorState = "unbroken" //current sensor state 
+    let effectTimeout = null; //tracks when "unbroken -> broken" starts 
+    const transitionTimeLimit = 3000; // Time limit in milliseconds (3 seconds)
+
+    const processSensorState = (state) => {
+      // Update the console and the web page with the IR sensor state
+      if (state === "Broken") {
+        console.log("IR beam is broken");
+        $irSensorState.textContent = "IR beam is BROKEN";
+        $irSensorState.style.color = "red";
+
+
+        if (sensorState === "unbroken") {
+          // Start een overgangstimer
+          sensorState = "broken";
+
+          // Stel een timer in voor de overgang
+          effectTimeout = setTimeout(() => {
+            // Na de tijdslimiet resetten we de status
+            sensorState = "unbroken";
+            effectTimeout = null;
+          }, transitionTimeLimit);
+        }
+
+
+      } else if (state === "Unbroken") {
+        console.log("IR beam is unbroken");
+        $irSensorState.textContent = "IR beam is UNBROKEN";
+        $irSensorState.style.color = "green";
+
+        if (sensorState === "broken") {
+          // Controleer of de timer nog loopt
+          if (effectTimeout) {
+            // Overgang voltooid binnen de limiet: effect uitvoeren
+            console.log("effect");
+
+            // Annuleer de timer en reset de status
+            clearTimeout(effectTimeout);
+            effectTimeout = null;
+          }
+          sensorState = "unbroken"; // Reset status
+        }
+
+      } else {
+        console.log("Unknown state:", state);
+      }
+    };
+
+    // const showEffect = () => {
+
+    // }
 
     const displaySupportedState = () => {
       if (hasWebSerial) {
