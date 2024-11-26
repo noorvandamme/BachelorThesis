@@ -161,18 +161,19 @@
         $irSensorState.style.color = "red";
 
 
-        if (sensorState === "unbroken") {
-          // Start een overgangstimer
-          sensorState = "broken";
+        // if (sensorState === "unbroken") {
+        //   // Start een overgangstimer
+        //   sensorState = "broken";
 
-          // Stel een timer in voor de overgang
-          effectTimeout = setTimeout(() => {
-            // Na de tijdslimiet resetten we de status
-            sensorState = "unbroken";
-            effectTimeout = null;
-          }, transitionTimeLimit);
-        }
+        //   // Stel een timer in voor de overgang
+        //   effectTimeout = setTimeout(() => {
+        //     // Na de tijdslimiet resetten we de status
+        //     sensorState = "unbroken";
+        //     effectTimeout = null;
+        //   }, transitionTimeLimit);
+        // }
 
+        sensorState = "broken"; // Status bijwerken
 
       } else if (state === "Unbroken") {
         console.log("IR beam is unbroken");
@@ -180,17 +181,11 @@
         $irSensorState.style.color = "green";
 
         if (sensorState === "broken") {
-          // Controleer of de timer nog loopt
-          if (effectTimeout) {
-            // Overgang voltooid binnen de limiet: effect uitvoeren
-            console.log("effect");
-
-            // Annuleer de timer en reset de status
-            clearTimeout(effectTimeout);
-            effectTimeout = null;
-          }
-          sensorState = "unbroken"; // Reset status
+          // Alleen effect uitvoeren bij overgang van "broken" naar "unbroken"
+          console.log("effect");
         }
+
+        sensorState = "unbroken"; // Status bijwerken
 
       } else {
         console.log("Unknown state:", state);
