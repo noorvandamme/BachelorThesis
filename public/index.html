@@ -28,6 +28,7 @@
         <div id="effect1-container" style="display: none; width: 400px; height: 400px;"></div>
         <div id="effect2-container" style="display: none; width: 400px; height: 400px;"></div>
         <div id="effect3-container" style="display: none; width: 400px; height: 400px;"></div>
+        <div id="effect4-container" style="display: none; width: 400px; height: 400px;"></div>
       </div>
     </div>
   </div>
@@ -184,6 +185,14 @@
         path: 'https://lottie.host/0f5c4ecc-bc27-4b5d-8145-8f35bb3562f8/GNAoEGpLFn.json'
       });
 
+      let effect4 = lottie.loadAnimation({
+        container: document.getElementById('effect4-container'),// container waar animatie komt 
+        renderer: 'svg',
+        loop: false,
+        autoplay: false,
+        path: 'https://lottie.host/236d3a25-87cc-43e2-8ccd-7f037c937820/KGclGJjM7B.json'
+      });
+
 
       try {
         // Parse de JSON-string die we van de Arduino krijgen
@@ -261,6 +270,24 @@
             }
             break;
 
+            case 3:
+            if (sensorState === "Broken") {
+              console.log("Effect triggered for Sensor 3: Broken");
+              if (effect4) effect4.destroy();
+
+              const effect4Container = document.getElementById('effect4-container');
+              effect4Container.style.display = 'block';
+
+              //herinitialiseer de animatie zodat elke keer opnieuw begint 
+              effect4 = lottie.loadAnimation({
+                container: document.getElementById('effect4-container'),
+                renderer: 'svg',
+                loop: false,
+                autoplay: true,
+                path: 'https://lottie.host/236d3a25-87cc-43e2-8ccd-7f037c937820/KGclGJjM7B.json'
+              });
+            }
+            break;
         }
 
       } catch (error) {
