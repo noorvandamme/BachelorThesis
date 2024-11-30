@@ -171,8 +171,8 @@
       sensorStates.forEach((sensorState, index) => {
         console.log(`${sensorState}`);
         // Voeg een extra check toe voor sensor 0
-        if (index === 0) {
-          console.log("Effect triggered for Sensor 0:", sensorState); // Dit is het effect voor sensor 0
+        if (index === 0 && sensorState === "Sensor 0: Broken") {
+          console.log("Effect triggered for Sensor 0: Broken"); // Dit is het effect voor sensor 0 als 'Broken'
           animation.play();
         }
       });
