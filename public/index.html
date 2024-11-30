@@ -21,6 +21,12 @@
       </div>
       <div id="connected" style="display: none;">
         <div>Connected</div>
+        <div id="start-container">
+          <button id="startButton">Start Game</button> <!-- Knop om het spel te starten -->
+        </div>
+        <div id="timer-container">
+          <p id="timerDisplay">Time left: 10s</p>
+        </div>
         <div id="pointsDisplay" style="margin-top: 20px; font-size: 20px; color: green;">
           Points: 50
         </div>
@@ -336,6 +342,51 @@
 
     let currentLevelIndex = 0; // Index voor het huidige niveau
     let points = levels[currentLevelIndex].points; // Startpunten van het eerste niveau
+    let timeLeft = 10;
+    let timerInterval;
+    let timerActive = false;
+
+    const startTimer = () => {
+      if (timerActive) return; //voorkomen dat de timer meerdere keren start 
+
+      timerActive = true;
+
+      timerInterval = setInterval(() => {
+        if (timeLeft > 0) {//als er tijd over is 
+          timeLeft--;
+          document.getElementById("timerDisplay").textContent = `Time left: ${timeLeft}s`;
+        } else {//geen tijd meer over 
+          clearInterval(timerInterval); //stop timer
+          timerActive = false;
+          handleGameOver(); //gameover 
+        }
+      }, 1000); // update seconden 
+    }
+
+    //game over
+    const handleGameOver = () => {
+      //level instellen op level 4 
+      level = 4;
+      updatePointsDisplay();//update pointsdisplay naar game over 
+    };
+
+    //reset spel voor nieuwe speler
+    const resetGame = () => {
+      timeLeft = 10; //reset timer naar 10 seconden 
+      points = levels[currentLevelIndex].points; //punten terug naar begin van scherm -> terug level 1
+      updatePointsDisplay(); // Werk de punten en progress bar bij
+      document.getElementById("timerDisplay").textContent = `Time left: ${timeLeft}s`; //timerdisplay opnieuw zetten
+      startTimer();
+    };
+
+    //start spel -> keuze monsters 
+    document.getElementById("startButton").addEventListener("click", () => {
+      startTimer();
+
+      document.getElementById("start-container").style.display = "none";  // verberg startknop
+      document.getElementById("timer-container").style.display = "block"; // toon timer
+      document.getElementById("points-container").style.display = "block"; // toon punten
+    });
 
     const updatePointsDisplay = () => {
       const pointsDisplay = document.getElementById("pointsDisplay");
