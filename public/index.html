@@ -21,11 +21,6 @@
       </div>
       <div id="connected" style="display: none;">
         <div>Connected</div>
-
-        <div id="irSensorState" style="margin-top: 20px; font-size: 20px; color: blue;">
-          Waiting for IR sensor data...
-        </div>
-
         <div id="start-screen">
           <h1>Kies je vijand</h1>
           <button id="character1Button">Character 1</button>
@@ -409,6 +404,10 @@
       updatePointsDisplay();//update pointsdisplay naar game over 
       clearInterval(gameState.timerInterval); // stop timer 
       document.getElementById("gameOver").style.display = "block";
+
+      setTimeout(() => {
+          resetGame();
+        }, 5000);
     };
 
     //reset spel voor nieuwe speler
