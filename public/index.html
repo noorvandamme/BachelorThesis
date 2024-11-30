@@ -21,27 +21,36 @@
       </div>
       <div id="connected" style="display: none;">
         <div>Connected</div>
-        <div id="start-container">
-          <button id="startButton">Start Game</button> <!-- Knop om het spel te starten -->
-        </div>
-        <div id="timer-container">
-          <p id="timerDisplay">Time left: 10s</p>
-        </div>
-        <div id="pointsDisplay" style="margin-top: 20px; font-size: 20px; color: green;">
-          Points: 50
-        </div>
-        <div id="points-container">
-          <p id="pointsDisplay"></p>
-          <progress id="pointsProgress" value="50" max="50"></progress> <!-- Progress bar -->
-        </div>
+
         <div id="irSensorState" style="margin-top: 20px; font-size: 20px; color: blue;">
           Waiting for IR sensor data...
         </div>
-        <!-- Container voor de Lottie animatie -->
-        <div id="effect1-container" style="display: none; width: 400px; height: 400px;"></div>
-        <div id="effect2-container" style="display: none; width: 400px; height: 400px;"></div>
-        <div id="effect3-container" style="display: none; width: 400px; height: 400px;"></div>
-        <div id="effect4-container" style="display: none; width: 400px; height: 400px;"></div>
+
+        <div id="start-screen">
+          <h1>Kies je vijand</h1>
+          <button id="character1Button">Character 1</button>
+          <button id="character2Button">Character 2</button>
+        </div>
+
+        <div id="game-screen" style="display: none;">
+          <div id="timer-container">
+            <p id="timerDisplay">Time left: 10s</p>
+          </div>
+          <div id="points-container">
+            <p id="pointsDisplay">Points: 50</p>
+            <progress id="pointsProgress" value="50" max="50"></progress> <!-- Progress bar -->
+          </div>
+          <div id="levelDisplay">Level: 1</div>
+          <div id="gameOver" style="display: none;">
+            <h2>Game Over!</h2>
+            <p>Better luck next time!</p>
+          </div>
+          <!-- Container voor de Lottie animatie -->
+          <div id="effect1-container" style="display: none; width: 400px; height: 400px;"></div>
+          <div id="effect2-container" style="display: none; width: 400px; height: 400px;"></div>
+          <div id="effect3-container" style="display: none; width: 400px; height: 400px;"></div>
+          <div id="effect4-container" style="display: none; width: 400px; height: 400px;"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -169,9 +178,23 @@
       }
     };
 
+
+    const levels = [
+      { level: 1, points: 50 },
+      { level: 2, points: 80 },
+      { level: 3, points: 100 },
+      { level: 4, points: 0 }
+    ];
+
     let sensorState = "unbroken"; //current sensor state //////////////////////////
     //let points = 50;
     let level = 1;
+    let currentLevelIndex = 0; // Index voor het huidige niveau
+    let points = levels[currentLevelIndex].points; // Startpunten van het eerste niveau
+    let timeLeft = 10;
+    let timerInterval;
+    let timerActive = false;
+
 
     const processSensorState = (state) => {
       //console.log(`Raw state: ${state}`);
@@ -333,18 +356,13 @@
       }
     };
 
-    const levels = [
-      { level: 1, points: 50 },
-      { level: 2, points: 80 },
-      { level: 3, points: 100 },
-      { level: 4, points: 0 }
-    ];
+    const startGame = () => {
+      document.getElementById("start-screen").style.display = "none"; // Verberg het startscherm
+      document.getElementById("game-screen").style.display = "block"; // Toon het game-scherm
 
-    let currentLevelIndex = 0; // Index voor het huidige niveau
-    let points = levels[currentLevelIndex].points; // Startpunten van het eerste niveau
-    let timeLeft = 10;
-    let timerInterval;
-    let timerActive = false;
+      // Start de timer wanneer het spel begint
+      startTimer();
+    }
 
     const startTimer = () => {
       if (timerActive) return; //voorkomen dat de timer meerdere keren start 
@@ -368,6 +386,7 @@
       //level instellen op level 4 
       level = 4;
       updatePointsDisplay();//update pointsdisplay naar game over 
+      document.getElementById("gameOver").style.display = "block";
     };
 
     //reset spel voor nieuwe speler
@@ -379,18 +398,10 @@
       startTimer();
     };
 
-    //start spel -> keuze monsters 
-    document.getElementById("startButton").addEventListener("click", () => {
-      startTimer();
-
-      document.getElementById("start-container").style.display = "none";  // verberg startknop
-      document.getElementById("timer-container").style.display = "block"; // toon timer
-      document.getElementById("points-container").style.display = "block"; // toon punten
-    });
-
     const updatePointsDisplay = () => {
       const pointsDisplay = document.getElementById("pointsDisplay");
       const pointsProgress = document.getElementById("pointsProgress");
+      document.getElementById("levelDisplay").textContent = `Level: ${level}`;
 
       //points kunnen niet negatief worden 
       points = Math.max(points, 0);
@@ -417,6 +428,15 @@
 
       console.log("Max Points:", maxPoints, "Current Points:", points, "Progress Value:", progressValue);
     };
+
+    //EVENTLISTENER VIJAND KEUZE 
+    document.getElementById("character1Button").addEventListener("click", () => {
+      startGame();
+    });
+
+    document.getElementById("character2Button").addEventListener("click", () => {
+      startGame();
+    });
 
 
     const displaySupportedState = () => {
