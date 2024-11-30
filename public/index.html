@@ -5,6 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IR Sensor Web Serial</title>
+  <!-- Voeg de Lottie-web library toe -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.10/lottie.min.js"></script>
 </head>
 
 <body>
@@ -21,6 +23,8 @@
         <div id="irSensorState" style="margin-top: 20px; font-size: 20px; color: blue;">
           Waiting for IR sensor data...
         </div>
+        <!-- Container voor de Lottie animatie -->
+        <div id="lottie-container" style="width: 400px; height: 400px;"></div>
       </div>
     </div>
   </div>
@@ -43,7 +47,6 @@
       usbVendorId: 9025
     };
     let connectedArduinoPorts = [];
-
 
     const init = async () => {
       displaySupportedState();
@@ -149,49 +152,28 @@
       }
     };
 
-    let sensorState = "unbroken" //current sensor state 
-    // let effectTimeout = null; //tracks when "unbroken -> broken" starts 
-    // const transitionTimeLimit = 3000; // Time limit in milliseconds (3 seconds)
-
-    // const processSensorState = (state) => {
-    //   // Update the console and the web page with the IR sensor state
-    //   if (state === "Broken") {
-    //     console.log("IR beam is broken");
-    //     $irSensorState.textContent = "IR beam is BROKEN";
-    //     $irSensorState.style.color = "red";
-
-    //     sensorState = "broken"; // Status bijwerken
-
-    //   } else if (state === "Unbroken") {
-    //     console.log("IR beam is unbroken");
-    //     $irSensorState.textContent = "IR beam is UNBROKEN";
-    //     $irSensorState.style.color = "green";
-
-    //     if (sensorState === "broken") {
-    //       // Alleen effect uitvoeren bij overgang van "broken" naar "unbroken"
-    //       console.log("effect");
-    //     }
-
-    //     sensorState = "unbroken"; // Status bijwerken
-
-    //   } else {
-    //     console.log("Unknown state:", state);
-    //   }
-    // };
+    let sensorState = "unbroken" //current sensor state
 
     const processSensorState = (state) => {
+
+      let animation = lottie.loadAnimation({
+        container: document.getElementById('lottie-container'), // de container waar de animatie moet komen
+        renderer: 'svg', // het formaat van de animatie
+        loop: false, // de animatie herhaalt zich niet
+        autoplay: false, // de animatie start niet automatisch
+        path: 'https://lottie.host/e63bd355-77f6-4d02-bf33-7642c530cdea/9NZV1bWT8m.json' // het pad naar de Lottie JSON (voorbeeld animatie)
+      });
+
       // Verwacht een string van de vorm: "Unbroken,Broken,Unbroken,Broken"
       const sensorStates = state.split(',');
 
       // Log elke sensorstatus naar de console
       sensorStates.forEach((sensorState, index) => {
-        if (sensorState === "Unbroken") {
-          console.log(`Sensor ${index} is Unbroken`);
-        } else if (sensorState === "Broken") {
-          console.log(`Sensor ${index} is Broken`);
-          console.log('effect')
-        } else {
-          console.log(`${sensorState}`);
+        console.log(`${sensorState}`);
+        // Voeg een extra check toe voor sensor 0
+        if (index === 0) {
+          console.log("Effect triggered for Sensor 0:", sensorState); // Dit is het effect voor sensor 0
+          animation.play();
         }
       });
 
@@ -200,13 +182,8 @@
       sensorStates.forEach((sensorState, index) => {
         statusText += ` ${sensorState}<br>`;
       });
-
       $irSensorState.innerHTML = statusText;
     };
-
-    // const showEffect = () => {
-
-    // }
 
     const displaySupportedState = () => {
       if (hasWebSerial) {
