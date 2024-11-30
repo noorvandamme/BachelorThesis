@@ -183,22 +183,37 @@
         console.log(data.sensor)
         console.log(data.state)
 
-        if(data.sensor === 0){
+        if (data.sensor === 0) {
           console.log('OK')
         }
 
-        if(data.state === "Broken"){
+        if (data.state === "Broken") {
           console.log('state Ok')
         }
 
-        // // Controleer elke sensorstatus en speel de bijbehorende animatie af als de sensor "Broken" is
-        // if (data["Sensor 0"] === "Broken") {
-        //   console.log("Effect triggered for Sensor 0: Broken");
-        //   //effect1.play();  // Speel animatie af voor Sensor 0
-        // } else if (data["Sensor 1"] === "Broken") {
-        //   console.log("Effect triggered for Sensor 1: Broken");
-        //  //effect2.play();  // Speel animatie af voor Sensor 1
-        // }
+        let sensor = data.sensor;
+        let sensorState = data.state;
+
+        if (sensor === 0 && sensorState === "Broken") {
+          console.log("Effect triggered for Sensor 0: Broken");
+          if (effect1) effect1.destroy();
+
+          const effect1Container = document.getElementById('effect1-container');
+          effect1Container.style.display = 'block';
+
+          //herinitialiseer de animatie zodat elke keer opnieuw begint 
+          effect1 = lottie.loadAnimation({
+            container: document.getElementById('effect1-container'),
+            renderer: 'svg',
+            loop: false,
+            autoplay: true,
+            path: 'https://lottie.host/e63bd355-77f6-4d02-bf33-7642c530cdea/9NZV1bWT8m.json'
+          });
+
+          // effect1.addEventListener('complete', () => {
+          //   effect1Container.style.display = 'none';
+          // });
+        }
 
       } catch (error) {
         console.error("Failed to parse JSON:", error);  // Foutmelding als JSON niet goed kan worden geparsed
