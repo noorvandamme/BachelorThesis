@@ -7,6 +7,7 @@
   <title>IR Sensor Web Serial</title>
   <!-- Voeg de Lottie-web library toe -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.10/lottie.min.js"></script>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
@@ -24,7 +25,8 @@
           Waiting for IR sensor data...
         </div>
         <!-- Container voor de Lottie animatie -->
-        <div id="lottie-container" style="width: 400px; height: 400px;"></div>
+        <div id="effect1-container" style="display: none; width: 400px; height: 400px;"></div>
+        <div id="effect2-container" style="display: none; width: 400px; height: 400px;"></div>
       </div>
     </div>
   </div>
@@ -155,43 +157,44 @@
     let sensorState = "unbroken" //current sensor state
 
     const processSensorState = (state) => {
+      console.log(`Raw state: ${state}`);
 
-      let animation = lottie.loadAnimation({
-        container: document.getElementById('lottie-container'),// container waar animatie komt 
-        renderer: 'svg', 
+      let effect1 = lottie.loadAnimation({
+        container: document.getElementById('effect1-container'),// container waar animatie komt 
+        renderer: 'svg',
         loop: false,
-        autoplay: false, 
-        path: 'https://lottie.host/e63bd355-77f6-4d02-bf33-7642c530cdea/9NZV1bWT8m.json' 
+        autoplay: false,
+        path: 'https://lottie.host/e63bd355-77f6-4d02-bf33-7642c530cdea/9NZV1bWT8m.json'
       });
 
-      // Verwacht een string van de vorm: "Unbroken,Broken,Unbroken,Broken"
-      const sensorStates = state.split(',');
+      let effect2 = lottie.loadAnimation({
+        container: document.getElementById('effect2-container'),// container waar animatie komt 
+        renderer: 'svg',
+        loop: false,
+        autoplay: false,
+        path: 'https://lottie.host/171f709d-8f30-4ee1-904a-c1b8b5e8e3e2/xXwExlc1Wh.json'
+      });
 
-      // Log elke sensorstatus naar de console
-      sensorStates.forEach((sensorState, index) => {
-        console.log(`${sensorState}`);
-        // Voeg een extra check toe voor sensor 0
-        if (index === 0 && sensorState === "Sensor 0: Broken") {
+
+      try {
+        // Parse de JSON-string die we van de Arduino krijgen
+        const data = JSON.parse(state);
+        console.log("Parsed data:", data);
+
+        // Controleer elke sensorstatus en speel de bijbehorende animatie af als de sensor "Broken" is
+        if (data["Sensor 0"] === "Broken") {
           console.log("Effect triggered for Sensor 0: Broken");
-          animation.destroy();
-
-          //herinitialiseer de animatie zodat elke keer opnieuw begint 
-          animation = lottie.loadAnimation({
-            container: document.getElementById('lottie-container'),
-            renderer: 'svg',
-            loop: false,
-            autoplay: true,
-            path: 'https://lottie.host/e63bd355-77f6-4d02-bf33-7642c530cdea/9NZV1bWT8m.json'
-          });
+          //effect1.play();  // Speel animatie af voor Sensor 0
+        } else if (data["Sensor 1"] === "Broken") {
+          console.log("Effect triggered for Sensor 1: Broken");
+         //effect2.play();  // Speel animatie af voor Sensor 1
         }
-      });
 
-      // Update de UI om de status weer te geven
-      let statusText = "";
-      sensorStates.forEach((sensorState, index) => {
-        statusText += ` ${sensorState}<br>`;
-      });
-      $irSensorState.innerHTML = statusText;
+        // Voeg hier eventuele extra logica toe voor de andere sensoren als dat nodig is
+
+      } catch (error) {
+        console.error("Failed to parse JSON:", error);  // Foutmelding als JSON niet goed kan worden geparsed
+      }
     };
 
     const displaySupportedState = () => {
