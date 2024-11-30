@@ -160,7 +160,7 @@
     };
 
     let sensorState = "unbroken"; //current sensor state //////////////////////////
-    let points = 50;
+    //let points = 50;
     let level = 1;
 
     const processSensorState = (state) => {
@@ -239,8 +239,8 @@
 
               //POINTS
               points -= 10;
-              console.log("Points remaining: " + points);
-              updatePointsDisplay();
+              //console.log("Points remaining: " + points);
+              //updatePointsDisplay();
             }
             break;
 
@@ -263,8 +263,8 @@
 
               //POINTS
               points -= 15;
-              console.log("Points remaining: " + points);
-              updatePointsDisplay();
+              //console.log("Points remaining: " + points);
+              //updatePointsDisplay();
             }
             break;
 
@@ -287,8 +287,8 @@
 
               //POINTS
               points -= 20;
-              console.log("Points remaining: " + points);
-              updatePointsDisplay();
+              //console.log("Points remaining: " + points);
+              //updatePointsDisplay();
             }
             break;
 
@@ -311,54 +311,48 @@
 
               //POINTS
               points -= 25;
-              console.log("Points remaining: " + points);
-              updatePointsDisplay();
+              //console.log("Points remaining: " + points);
             }
             break;
         }
+
+        updatePointsDisplay();
 
       } catch (error) {
         console.error("Failed to parse JSON:", error);  // Foutmelding als JSON niet goed kan worden geparsed
       }
     };
 
+    const levels = [
+      { level: 1, points: 50, backgroundColor: "" },      
+      { level: 2, points: 80, backgroundColor: "pink" },   
+      { level: 3, points: 100, backgroundColor: "yellow" }, 
+      { level: 4, points: 0, backgroundColor: "gray" }    
+    ];
+
+    let currentLevelIndex = 0; // Index voor het huidige niveau
+    let points = levels[currentLevelIndex].points; // Startpunten van het eerste niveau
+
     const updatePointsDisplay = () => {
       const pointsDisplay = document.getElementById("pointsDisplay");
-      //punten display updaten 
-      if (level === 1 || level === 2 || level === 3) {
+
+      //points kunnen niet negatief worden 
+      points = Math.max(points, 0);
+
+      if (currentLevelIndex === 3) {  // Game Over level
+        pointsDisplay.textContent = "Game Over";
+      } else {
         pointsDisplay.textContent = `Points: ${points}`;
-      } else if (level === 4) {
-        pointsDisplay.textContent = `Game Over`;
       }
 
-
-      //CHANGING LEVEL
-      if (points <= 0 && level === 2) {
-        level = 3; // Ga naar level 3
-        points = 100
-        console.log("Level 3 reached");
-      } else if (points <= 0 && level === 1) {
-        level = 2; // Ga naar level 2
-        points = 80
-        console.log("Level 2 reached");
-      } else if (points <= 0 && level === 3) {
-        console.log('Game Over')
-        level = 4
-        //pointsDisplay.textContent = `Game Over: ${points}`;
-      }
-
-      if (level === 1) {
-        document.body.style.backgroundColor = "";
-      } else if (level === 2) {
-        //points = 80
-        pointsDisplay.textContent = `Points: ${points}`;
-        document.body.style.backgroundColor = "pink";
-      } else if (level === 3) {
-        //points = 100
-        pointsDisplay.textContent = `Points: ${points}`;
-        document.body.style.backgroundColor = "yellow";
-      }
+      // als punten minder of gelijk aan 0 -> next level
+      if (points <= 0 && currentLevelIndex < levels.length - 1) {
+        currentLevelIndex++;
+        points = levels[currentLevelIndex].points;  // punten reseten voor nieuwe level 
+        console.log(`Level ${levels[currentLevelIndex].level} reached`);
+      };
     };
+
 
     const displaySupportedState = () => {
       if (hasWebSerial) {
