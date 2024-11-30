@@ -213,6 +213,26 @@
               });
             }
             break;
+
+          case 1:
+            if (sensorState === "Broken") {
+              console.log("Effect triggered for Sensor 1: Broken");
+              if (effect2) effect2.destroy();
+
+              const effect2Container = document.getElementById('effect2-container');
+              effect2Container.style.display = 'block';
+
+              //herinitialiseer de animatie zodat elke keer opnieuw begint 
+              effect2 = lottie.loadAnimation({
+                container: document.getElementById('effect2-container'),
+                renderer: 'svg',
+                loop: false,
+                autoplay: true,
+                path: 'https://lottie.host/171f709d-8f30-4ee1-904a-c1b8b5e8e3e2/xXwExlc1Wh.json'
+              });
+            }
+            break;
+
         }
 
       } catch (error) {
