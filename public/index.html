@@ -157,11 +157,11 @@
     const processSensorState = (state) => {
 
       let animation = lottie.loadAnimation({
-        container: document.getElementById('lottie-container'), // de container waar de animatie moet komen
-        renderer: 'svg', // het formaat van de animatie
-        loop: false, // de animatie herhaalt zich niet
-        autoplay: false, // de animatie start niet automatisch
-        path: 'https://lottie.host/e63bd355-77f6-4d02-bf33-7642c530cdea/9NZV1bWT8m.json' // het pad naar de Lottie JSON (voorbeeld animatie)
+        container: document.getElementById('lottie-container'),// container waar animatie komt 
+        renderer: 'svg', 
+        loop: false,
+        autoplay: false, 
+        path: 'https://lottie.host/e63bd355-77f6-4d02-bf33-7642c530cdea/9NZV1bWT8m.json' 
       });
 
       // Verwacht een string van de vorm: "Unbroken,Broken,Unbroken,Broken"
@@ -172,8 +172,17 @@
         console.log(`${sensorState}`);
         // Voeg een extra check toe voor sensor 0
         if (index === 0 && sensorState === "Sensor 0: Broken") {
-          console.log("Effect triggered for Sensor 0: Broken"); // Dit is het effect voor sensor 0 als 'Broken'
-          animation.play();
+          console.log("Effect triggered for Sensor 0: Broken");
+          animation.destroy();
+
+          //herinitialiseer de animatie zodat elke keer opnieuw begint 
+          animation = lottie.loadAnimation({
+            container: document.getElementById('lottie-container'),
+            renderer: 'svg',
+            loop: false,
+            autoplay: true,
+            path: 'https://lottie.host/e63bd355-77f6-4d02-bf33-7642c530cdea/9NZV1bWT8m.json'
+          });
         }
       });
 
