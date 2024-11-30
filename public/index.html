@@ -157,7 +157,7 @@
     let sensorState = "unbroken" //current sensor state
 
     const processSensorState = (state) => {
-      console.log(`Raw state: ${state}`);
+      //console.log(`Raw state: ${state}`);
 
       let effect1 = lottie.loadAnimation({
         container: document.getElementById('effect1-container'),// container waar animatie komt 
@@ -180,17 +180,25 @@
         // Parse de JSON-string die we van de Arduino krijgen
         const data = JSON.parse(state);
         console.log("Parsed data:", data);
+        console.log(data.sensor)
+        console.log(data.state)
 
-        // Controleer elke sensorstatus en speel de bijbehorende animatie af als de sensor "Broken" is
-        if (data["Sensor 0"] === "Broken") {
-          console.log("Effect triggered for Sensor 0: Broken");
-          //effect1.play();  // Speel animatie af voor Sensor 0
-        } else if (data["Sensor 1"] === "Broken") {
-          console.log("Effect triggered for Sensor 1: Broken");
-         //effect2.play();  // Speel animatie af voor Sensor 1
+        if(data.sensor === 0){
+          console.log('OK')
         }
 
-        // Voeg hier eventuele extra logica toe voor de andere sensoren als dat nodig is
+        if(data.state === "Broken"){
+          console.log('state Ok')
+        }
+
+        // // Controleer elke sensorstatus en speel de bijbehorende animatie af als de sensor "Broken" is
+        // if (data["Sensor 0"] === "Broken") {
+        //   console.log("Effect triggered for Sensor 0: Broken");
+        //   //effect1.play();  // Speel animatie af voor Sensor 0
+        // } else if (data["Sensor 1"] === "Broken") {
+        //   console.log("Effect triggered for Sensor 1: Broken");
+        //  //effect2.play();  // Speel animatie af voor Sensor 1
+        // }
 
       } catch (error) {
         console.error("Failed to parse JSON:", error);  // Foutmelding als JSON niet goed kan worden geparsed
