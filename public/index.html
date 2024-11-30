@@ -368,7 +368,13 @@
       document.getElementById("start-screen").style.display = "none"; // Verberg het startscherm
       document.getElementById("game-screen").style.display = "block"; // Toon het game-scherm
 
-      // Start de timer wanneer het spel begint
+      gameState.level = 1; // starten met level 1 
+      gameState.points = levels[0].points;
+      gameState.timeLeft = 10;
+      gameState.currentLevelIndex = 0;
+
+      updatePointsDisplay();
+
       startTimer();
     }
 
@@ -403,11 +409,17 @@
 
     //reset spel voor nieuwe speler
     const resetGame = () => {
-      timeLeft = 10; //reset timer naar 10 seconden 
-      points = levels[currentLevelIndex].points; //punten terug naar begin van scherm -> terug level 1
-      updatePointsDisplay(); // Werk de punten en progress bar bij
-      document.getElementById("timerDisplay").textContent = `Time left: ${timeLeft}s`; //timerdisplay opnieuw zetten
-      startTimer();
+      gameState.level = 1;
+      gameState.points = levels[0].points;
+      gameState.timeLeft = 10;
+      gameState.timerActive = false;
+      gameState.currentLevelIndex = 0;
+
+      updatePointsDisplay();
+      resetTimer();
+      document.getElementById("gameOver").style.display = "none";
+      document.getElementById("game-screen").style.display = "none";
+      document.getElementById("start-screen").style.display = "block";
     };
 
     const updatePointsDisplay = () => {
@@ -441,7 +453,7 @@
       if (gameState.currentLevelIndex < levels.length - 1) {
         gameState.currentLevelIndex++;
         gameState.level++;
-        gameState.points = levels[gameState.currentLevelIndex].points; // Reset punten voor dit level
+        gameState.points = levels[gameState.currentLevelIndex].points;
         resetTimer();
         updatePointsDisplay();
       } else {
