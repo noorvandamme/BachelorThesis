@@ -207,6 +207,8 @@
     const processSensorState = (state) => {
       //console.log(`Raw state: ${state}`);
 
+      if (gameState.level === 4) return;
+
       let effect1 = lottie.loadAnimation({
         container: document.getElementById('effect1-container'),// container waar animatie komt 
         renderer: 'svg',
@@ -404,6 +406,7 @@
       //level instellen op level 4 
       gameState.level = 4;
       updatePointsDisplay();//update pointsdisplay naar game over 
+      clearInterval(gameState.timerInterval); // stop timer 
       document.getElementById("gameOver").style.display = "block";
     };
 
@@ -436,8 +439,11 @@
       const progressValue = Math.max(gameState.points);  //value is resterende leven 
       pointsProgress.value = progressValue;
 
-      if (gameState.currentLevelIndex === levels.length - 1) {  // Game Over level
+      if (gameState.currentLevelIndex === levels.length - 1) {
         pointsDisplay.textContent = "Winnaar";
+        clearInterval(timerInterval); //timer stoppen 
+        gameState.timerActive = false;
+        return;
       } else {
         pointsDisplay.textContent = `Points: ${gameState.points}`;
       }
@@ -454,7 +460,7 @@
         gameState.currentLevelIndex++;
         gameState.level++;
         gameState.points = levels[gameState.currentLevelIndex].points;
-        resetTimer();
+        //resetTimer(); -> OPTIE 
         updatePointsDisplay();
       } else {
         console.log("Winnaar");
