@@ -194,25 +194,25 @@
         let sensor = data.sensor;
         let sensorState = data.state;
 
-        if (sensor === 0 && sensorState === "Broken") {
-          console.log("Effect triggered for Sensor 0: Broken");
-          if (effect1) effect1.destroy();
+        switch (sensor) {
+          case 0:
+            if (sensorState === "Broken") {
+              console.log("Effect triggered for Sensor 0: Broken");
+              if (effect1) effect1.destroy();
 
-          const effect1Container = document.getElementById('effect1-container');
-          effect1Container.style.display = 'block';
+              const effect1Container = document.getElementById('effect1-container');
+              effect1Container.style.display = 'block';
 
-          //herinitialiseer de animatie zodat elke keer opnieuw begint 
-          effect1 = lottie.loadAnimation({
-            container: document.getElementById('effect1-container'),
-            renderer: 'svg',
-            loop: false,
-            autoplay: true,
-            path: 'https://lottie.host/e63bd355-77f6-4d02-bf33-7642c530cdea/9NZV1bWT8m.json'
-          });
-
-          // effect1.addEventListener('complete', () => {
-          //   effect1Container.style.display = 'none';
-          // });
+              //herinitialiseer de animatie zodat elke keer opnieuw begint 
+              effect1 = lottie.loadAnimation({
+                container: document.getElementById('effect1-container'),
+                renderer: 'svg',
+                loop: false,
+                autoplay: true,
+                path: 'https://lottie.host/e63bd355-77f6-4d02-bf33-7642c530cdea/9NZV1bWT8m.json'
+              });
+            }
+            break;
         }
 
       } catch (error) {
