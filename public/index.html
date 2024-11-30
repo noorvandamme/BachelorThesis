@@ -21,6 +21,9 @@
       </div>
       <div id="connected" style="display: none;">
         <div>Connected</div>
+        <div id="pointsDisplay" style="margin-top: 20px; font-size: 20px; color: green;">
+          Points: 50
+        </div>
         <div id="irSensorState" style="margin-top: 20px; font-size: 20px; color: blue;">
           Waiting for IR sensor data...
         </div>
@@ -156,7 +159,8 @@
       }
     };
 
-    let sensorState = "unbroken" //current sensor state
+    let sensorState = "unbroken"; //current sensor state //////////////////////////
+    let points = 50;
 
     const processSensorState = (state) => {
       //console.log(`Raw state: ${state}`);
@@ -216,6 +220,8 @@
           case 0:
             if (sensorState === "Broken") {
               console.log("Effect triggered for Sensor 0: Broken");
+
+              //ANIMATION 
               if (effect1) effect1.destroy();
 
               const effect1Container = document.getElementById('effect1-container');
@@ -229,6 +235,11 @@
                 autoplay: true,
                 path: 'https://lottie.host/e63bd355-77f6-4d02-bf33-7642c530cdea/9NZV1bWT8m.json'
               });
+
+              //POINTS
+              points -= 10;
+              console.log("Points remaining: " + points);
+              updatePointsDisplay();
             }
             break;
 
@@ -270,7 +281,7 @@
             }
             break;
 
-            case 3:
+          case 3:
             if (sensorState === "Broken") {
               console.log("Effect triggered for Sensor 3: Broken");
               if (effect4) effect4.destroy();
@@ -292,6 +303,23 @@
 
       } catch (error) {
         console.error("Failed to parse JSON:", error);  // Foutmelding als JSON niet goed kan worden geparsed
+      }
+    };
+
+    const updatePointsDisplay = () => {
+      const pointsDisplay = document.getElementById("pointsDisplay");
+      if (pointsDisplay) {
+        pointsDisplay.textContent = `Points: ${points}`;
+      }
+
+      //level aanpassen bij 0 of minder dan 0 
+      if (points <= 0) {
+        document.body.style.backgroundColor = "pink";
+        points = 80;
+        pointsDisplay.textContent = `Points: ${points}`;
+        console.log('level2')
+      } else {
+        document.body.style.backgroundColor = "";  // Zet de achtergrondkleur terug naar standaard
       }
     };
 
