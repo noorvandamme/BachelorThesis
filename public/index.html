@@ -150,8 +150,8 @@
     };
 
     let sensorState = "unbroken" //current sensor state 
-    let effectTimeout = null; //tracks when "unbroken -> broken" starts 
-    const transitionTimeLimit = 3000; // Time limit in milliseconds (3 seconds)
+    // let effectTimeout = null; //tracks when "unbroken -> broken" starts 
+    // const transitionTimeLimit = 3000; // Time limit in milliseconds (3 seconds)
 
     const processSensorState = (state) => {
       // Update the console and the web page with the IR sensor state
@@ -159,19 +159,6 @@
         console.log("IR beam is broken");
         $irSensorState.textContent = "IR beam is BROKEN";
         $irSensorState.style.color = "red";
-
-
-        // if (sensorState === "unbroken") {
-        //   // Start een overgangstimer
-        //   sensorState = "broken";
-
-        //   // Stel een timer in voor de overgang
-        //   effectTimeout = setTimeout(() => {
-        //     // Na de tijdslimiet resetten we de status
-        //     sensorState = "unbroken";
-        //     effectTimeout = null;
-        //   }, transitionTimeLimit);
-        // }
 
         sensorState = "broken"; // Status bijwerken
 
