@@ -161,6 +161,7 @@
 
     let sensorState = "unbroken"; //current sensor state //////////////////////////
     let points = 50;
+    let level = 1;
 
     const processSensorState = (state) => {
       //console.log(`Raw state: ${state}`);
@@ -197,7 +198,6 @@
         path: 'https://lottie.host/236d3a25-87cc-43e2-8ccd-7f037c937820/KGclGJjM7B.json'
       });
 
-
       try {
         // Parse de JSON-string die we van de Arduino krijgen
         const data = JSON.parse(state);
@@ -215,6 +215,7 @@
 
         let sensor = data.sensor;
         let sensorState = data.state;
+
 
         switch (sensor) {
           case 0:
@@ -259,6 +260,11 @@
                 autoplay: true,
                 path: 'https://lottie.host/171f709d-8f30-4ee1-904a-c1b8b5e8e3e2/xXwExlc1Wh.json'
               });
+
+              //POINTS
+              points -= 15;
+              console.log("Points remaining: " + points);
+              updatePointsDisplay();
             }
             break;
 
@@ -278,6 +284,11 @@
                 autoplay: true,
                 path: 'https://lottie.host/0f5c4ecc-bc27-4b5d-8145-8f35bb3562f8/GNAoEGpLFn.json'
               });
+
+              //POINTS
+              points -= 20;
+              console.log("Points remaining: " + points);
+              updatePointsDisplay();
             }
             break;
 
@@ -297,6 +308,11 @@
                 autoplay: true,
                 path: 'https://lottie.host/236d3a25-87cc-43e2-8ccd-7f037c937820/KGclGJjM7B.json'
               });
+
+              //POINTS
+              points -= 25;
+              console.log("Points remaining: " + points);
+              updatePointsDisplay();
             }
             break;
         }
@@ -308,18 +324,39 @@
 
     const updatePointsDisplay = () => {
       const pointsDisplay = document.getElementById("pointsDisplay");
-      if (pointsDisplay) {
+      //punten display updaten 
+      if (level === 1 || level === 2 || level === 3) {
         pointsDisplay.textContent = `Points: ${points}`;
+      } else if (level === 4) {
+        pointsDisplay.textContent = `Game Over`;
       }
 
-      //level aanpassen bij 0 of minder dan 0 
-      if (points <= 0) {
-        document.body.style.backgroundColor = "pink";
-        points = 80;
+
+      //CHANGING LEVEL
+      if (points <= 0 && level === 2) {
+        level = 3; // Ga naar level 3
+        points = 100
+        console.log("Level 3 reached");
+      } else if (points <= 0 && level === 1) {
+        level = 2; // Ga naar level 2
+        points = 80
+        console.log("Level 2 reached");
+      } else if (points <= 0 && level === 3) {
+        console.log('Game Over')
+        level = 4
+        //pointsDisplay.textContent = `Game Over: ${points}`;
+      }
+
+      if (level === 1) {
+        document.body.style.backgroundColor = "";
+      } else if (level === 2) {
+        //points = 80
         pointsDisplay.textContent = `Points: ${points}`;
-        console.log('level2')
-      } else {
-        document.body.style.backgroundColor = "";  // Zet de achtergrondkleur terug naar standaard
+        document.body.style.backgroundColor = "pink";
+      } else if (level === 3) {
+        //points = 100
+        pointsDisplay.textContent = `Points: ${points}`;
+        document.body.style.backgroundColor = "yellow";
       }
     };
 
