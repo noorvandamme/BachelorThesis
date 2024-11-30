@@ -24,6 +24,10 @@
         <div id="pointsDisplay" style="margin-top: 20px; font-size: 20px; color: green;">
           Points: 50
         </div>
+        <div id="points-container">
+          <p id="pointsDisplay"></p>
+          <progress id="pointsProgress" value="50" max="50"></progress> <!-- Progress bar -->
+        </div>
         <div id="irSensorState" style="margin-top: 20px; font-size: 20px; color: blue;">
           Waiting for IR sensor data...
         </div>
@@ -201,17 +205,17 @@
       try {
         // Parse de JSON-string die we van de Arduino krijgen
         const data = JSON.parse(state);
-        console.log("Parsed data:", data);
-        console.log(data.sensor)
-        console.log(data.state)
+        //console.log("Parsed data:", data);
+        //console.log(data.sensor)
+        //console.log(data.state)
 
-        if (data.sensor === 0) {
-          console.log('OK')
-        }
+        // if (data.sensor === 0) {
+        //   console.log('OK')
+        // }
 
-        if (data.state === "Broken") {
-          console.log('state Ok')
-        }
+        // if (data.state === "Broken") {
+        //   console.log('state Ok')
+        // }
 
         let sensor = data.sensor;
         let sensorState = data.state;
@@ -220,7 +224,7 @@
         switch (sensor) {
           case 0:
             if (sensorState === "Broken") {
-              console.log("Effect triggered for Sensor 0: Broken");
+              //console.log("Effect triggered for Sensor 0: Broken");
 
               //ANIMATION 
               if (effect1) effect1.destroy();
@@ -246,7 +250,7 @@
 
           case 1:
             if (sensorState === "Broken") {
-              console.log("Effect triggered for Sensor 1: Broken");
+              //console.log("Effect triggered for Sensor 1: Broken");
               if (effect2) effect2.destroy();
 
               const effect2Container = document.getElementById('effect2-container');
@@ -270,7 +274,7 @@
 
           case 2:
             if (sensorState === "Broken") {
-              console.log("Effect triggered for Sensor 2: Broken");
+              //console.log("Effect triggered for Sensor 2: Broken");
               if (effect3) effect3.destroy();
 
               const effect3Container = document.getElementById('effect3-container');
@@ -294,7 +298,7 @@
 
           case 3:
             if (sensorState === "Broken") {
-              console.log("Effect triggered for Sensor 3: Broken");
+              //console.log("Effect triggered for Sensor 3: Broken");
               if (effect4) effect4.destroy();
 
               const effect4Container = document.getElementById('effect4-container');
@@ -324,10 +328,10 @@
     };
 
     const levels = [
-      { level: 1, points: 50, backgroundColor: "" },      
-      { level: 2, points: 80, backgroundColor: "pink" },   
-      { level: 3, points: 100, backgroundColor: "yellow" }, 
-      { level: 4, points: 0, backgroundColor: "gray" }    
+      { level: 1, points: 50 },
+      { level: 2, points: 80 },
+      { level: 3, points: 100 },
+      { level: 4, points: 0 }
     ];
 
     let currentLevelIndex = 0; // Index voor het huidige niveau
@@ -335,9 +339,17 @@
 
     const updatePointsDisplay = () => {
       const pointsDisplay = document.getElementById("pointsDisplay");
+      const pointsProgress = document.getElementById("pointsProgress");
 
       //points kunnen niet negatief worden 
       points = Math.max(points, 0);
+
+      const maxPoints = levels[currentLevelIndex].points;  //max punten voor huidige level instellen 
+      pointsProgress.max = maxPoints;
+
+      const progressValue = Math.max(points);  //value is resterende leven 
+      pointsProgress.value = progressValue;
+
 
       if (currentLevelIndex === 3) {  // Game Over level
         pointsDisplay.textContent = "Game Over";
@@ -349,8 +361,10 @@
       if (points <= 0 && currentLevelIndex < levels.length - 1) {
         currentLevelIndex++;
         points = levels[currentLevelIndex].points;  // punten reseten voor nieuwe level 
-        console.log(`Level ${levels[currentLevelIndex].level} reached`);
+        //console.log(`Level ${levels[currentLevelIndex].level} reached`);
       };
+
+      console.log("Max Points:", maxPoints, "Current Points:", points, "Progress Value:", progressValue);
     };
 
 
