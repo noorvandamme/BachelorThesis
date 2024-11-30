@@ -43,7 +43,6 @@
           <div id="levelDisplay">Level: 1</div>
           <div id="gameOver" style="display: none;">
             <h2>Game Over!</h2>
-            <p>Better luck next time!</p>
           </div>
           <!-- Container voor de Lottie animatie -->
           <div id="effect1-container" style="display: none; width: 400px; height: 400px;"></div>
@@ -59,6 +58,23 @@
     // App state
     const hasWebSerial = "serial" in navigator;
     let isConnected = false;
+
+    const gameState = {
+      level: 1,               // Huidig niveau
+      points: 0,              // Huidige punten
+      timeLeft: 10,           // Tijd over in seconden
+      timerActive: false,     // Is de timer actief?
+      currentLevelIndex: 0    // Index van het huidige level in een array van levels
+    };
+
+    const levels = [
+      { level: 1, points: 50 },
+      { level: 2, points: 80 },
+      { level: 3, points: 100 },
+      { level: 4, points: 0 }
+    ];
+
+    let timerInterval;
 
     const $notSupported = document.getElementById("not-supported");
     const $supported = document.getElementById("supported");
@@ -179,22 +195,14 @@
     };
 
 
-    const levels = [
-      { level: 1, points: 50 },
-      { level: 2, points: 80 },
-      { level: 3, points: 100 },
-      { level: 4, points: 0 }
-    ];
-
     let sensorState = "unbroken"; //current sensor state //////////////////////////
     //let points = 50;
-    let level = 1;
-    let currentLevelIndex = 0; // Index voor het huidige niveau
-    let points = levels[currentLevelIndex].points; // Startpunten van het eerste niveau
-    let timeLeft = 10;
-    let timerInterval;
-    let timerActive = false;
 
+    // let level = 1;
+    // let currentLevelIndex = 0; // Index voor het huidige niveau
+    // let points = levels[currentLevelIndex].points; // Startpunten van het eerste niveau
+    // let timeLeft = 10;
+    // let timerActive = false;
 
     const processSensorState = (state) => {
       //console.log(`Raw state: ${state}`);
@@ -271,7 +279,7 @@
               });
 
               //POINTS
-              points -= 10;
+              gameState.points -= 10;
               //console.log("Points remaining: " + points);
               //updatePointsDisplay();
             }
@@ -295,7 +303,7 @@
               });
 
               //POINTS
-              points -= 15;
+              gameState.points -= 15;
               //console.log("Points remaining: " + points);
               //updatePointsDisplay();
             }
@@ -319,7 +327,7 @@
               });
 
               //POINTS
-              points -= 20;
+              gameState.points -= 20;
               //console.log("Points remaining: " + points);
               //updatePointsDisplay();
             }
@@ -343,7 +351,7 @@
               });
 
               //POINTS
-              points -= 25;
+              gameState.points -= 25;
               //console.log("Points remaining: " + points);
             }
             break;
@@ -365,26 +373,30 @@
     }
 
     const startTimer = () => {
-      if (timerActive) return; //voorkomen dat de timer meerdere keren start 
-
-      timerActive = true;
+      if (gameState.timerActive) return; //voorkomen dat de timer meerdere keren start 
+      gameState.timerActive = true;
 
       timerInterval = setInterval(() => {
-        if (timeLeft > 0) {//als er tijd over is 
-          timeLeft--;
-          document.getElementById("timerDisplay").textContent = `Time left: ${timeLeft}s`;
+        if (gameState.timeLeft > 0) {//als er tijd over is 
+          gameState.timeLeft--;
+          document.getElementById("timerDisplay").textContent = `Time left: ${gameState.timeLeft}s`;
         } else {//geen tijd meer over 
           clearInterval(timerInterval); //stop timer
-          timerActive = false;
+          gameState.timerActive = false;
           handleGameOver(); //gameover 
         }
       }, 1000); // update seconden 
     }
 
-    //game over
+    const resetTimer = () => {
+      gameState.timeLeft = 10;
+      gameState.timerActive = false;
+      document.getElementById("timerDisplay").textContent = `Time Left: ${gameState.timeLeft}s`;
+    }
+
     const handleGameOver = () => {
       //level instellen op level 4 
-      level = 4;
+      gameState.level = 4;
       updatePointsDisplay();//update pointsdisplay naar game over 
       document.getElementById("gameOver").style.display = "block";
     };
@@ -401,33 +413,41 @@
     const updatePointsDisplay = () => {
       const pointsDisplay = document.getElementById("pointsDisplay");
       const pointsProgress = document.getElementById("pointsProgress");
-      document.getElementById("levelDisplay").textContent = `Level: ${level}`;
+      document.getElementById("levelDisplay").textContent = `Level: ${gameState.level}`;
 
       //points kunnen niet negatief worden 
-      points = Math.max(points, 0);
+      gameState.points = Math.max(gameState.points, 0);
 
-      const maxPoints = levels[currentLevelIndex].points;  //max punten voor huidige level instellen 
+      const maxPoints = levels[gameState.currentLevelIndex].points;  //max punten voor huidige level instellen 
       pointsProgress.max = maxPoints;
 
-      const progressValue = Math.max(points);  //value is resterende leven 
+      const progressValue = Math.max(gameState.points);  //value is resterende leven 
       pointsProgress.value = progressValue;
 
-
-      if (currentLevelIndex === 3) {  // Game Over level
-        pointsDisplay.textContent = "Game Over";
+      if (gameState.currentLevelIndex === levels.length - 1) {  // Game Over level
+        pointsDisplay.textContent = "Winnaar";
       } else {
-        pointsDisplay.textContent = `Points: ${points}`;
+        pointsDisplay.textContent = `Points: ${gameState.points}`;
       }
 
-      // als punten minder of gelijk aan 0 -> next level
-      if (points <= 0 && currentLevelIndex < levels.length - 1) {
-        currentLevelIndex++;
-        points = levels[currentLevelIndex].points;  // punten reseten voor nieuwe level 
-        //console.log(`Level ${levels[currentLevelIndex].level} reached`);
-      };
+      if (gameState.points <= 0 && gameState.currentLevelIndex < levels.length - 1) {
+        nextLevel(); //schakel naar volgende level wnr er 0 of minder punten zijn en gebasseerd op current level
+      }
 
-      console.log("Max Points:", maxPoints, "Current Points:", points, "Progress Value:", progressValue);
+      console.log("Max Points:", maxPoints, "Current Points:", gameState.points, "Progress Value:", progressValue);
     };
+
+    const nextLevel = () => {
+      if (gameState.currentLevelIndex < levels.length - 1) {
+        gameState.currentLevelIndex++;
+        gameState.level++;
+        gameState.points = levels[gameState.currentLevelIndex].points; // Reset punten voor dit level
+        resetTimer();
+        updatePointsDisplay();
+      } else {
+        console.log("Winnaar");
+      }
+    }
 
     //EVENTLISTENER VIJAND KEUZE 
     document.getElementById("character1Button").addEventListener("click", () => {
