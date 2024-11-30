@@ -153,30 +153,55 @@
     // let effectTimeout = null; //tracks when "unbroken -> broken" starts 
     // const transitionTimeLimit = 3000; // Time limit in milliseconds (3 seconds)
 
+    // const processSensorState = (state) => {
+    //   // Update the console and the web page with the IR sensor state
+    //   if (state === "Broken") {
+    //     console.log("IR beam is broken");
+    //     $irSensorState.textContent = "IR beam is BROKEN";
+    //     $irSensorState.style.color = "red";
+
+    //     sensorState = "broken"; // Status bijwerken
+
+    //   } else if (state === "Unbroken") {
+    //     console.log("IR beam is unbroken");
+    //     $irSensorState.textContent = "IR beam is UNBROKEN";
+    //     $irSensorState.style.color = "green";
+
+    //     if (sensorState === "broken") {
+    //       // Alleen effect uitvoeren bij overgang van "broken" naar "unbroken"
+    //       console.log("effect");
+    //     }
+
+    //     sensorState = "unbroken"; // Status bijwerken
+
+    //   } else {
+    //     console.log("Unknown state:", state);
+    //   }
+    // };
+
     const processSensorState = (state) => {
-      // Update the console and the web page with the IR sensor state
-      if (state === "Broken") {
-        console.log("IR beam is broken");
-        $irSensorState.textContent = "IR beam is BROKEN";
-        $irSensorState.style.color = "red";
+      // Verwacht een string van de vorm: "Unbroken,Broken,Unbroken,Broken"
+      const sensorStates = state.split(',');
 
-        sensorState = "broken"; // Status bijwerken
-
-      } else if (state === "Unbroken") {
-        console.log("IR beam is unbroken");
-        $irSensorState.textContent = "IR beam is UNBROKEN";
-        $irSensorState.style.color = "green";
-
-        if (sensorState === "broken") {
-          // Alleen effect uitvoeren bij overgang van "broken" naar "unbroken"
-          console.log("effect");
+      // Log elke sensorstatus naar de console
+      sensorStates.forEach((sensorState, index) => {
+        if (sensorState === "Unbroken") {
+          console.log(`Sensor ${index} is Unbroken`);
+        } else if (sensorState === "Broken") {
+          console.log(`Sensor ${index} is Broken`);
+          console.log('effect')
+        } else {
+          console.log(`${sensorState}`);
         }
+      });
 
-        sensorState = "unbroken"; // Status bijwerken
+      // Update de UI om de status weer te geven
+      let statusText = "";
+      sensorStates.forEach((sensorState, index) => {
+        statusText += ` ${sensorState}<br>`;
+      });
 
-      } else {
-        console.log("Unknown state:", state);
-      }
+      $irSensorState.innerHTML = statusText;
     };
 
     // const showEffect = () => {
