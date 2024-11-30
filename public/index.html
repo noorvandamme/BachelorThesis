@@ -207,6 +207,7 @@
     const processSensorState = (state) => {
       //console.log(`Raw state: ${state}`);
 
+      //geen weizigingen meer aanbrengen wnr spel gedaan is
       if (gameState.level === 4) return;
 
       let effect1 = lottie.loadAnimation({
@@ -419,10 +420,14 @@
       gameState.currentLevelIndex = 0;
 
       updatePointsDisplay();
-      resetTimer();
       document.getElementById("gameOver").style.display = "none";
       document.getElementById("game-screen").style.display = "none";
       document.getElementById("start-screen").style.display = "block";
+
+      document.getElementById("timerDisplay").textContent = `Time left: ${gameState.timeLeft}s`;
+      document.getElementById("pointsDisplay").textContent = `Points: ${gameState.points}`;
+      document.getElementById("pointsProgress").value = gameState.points;
+      document.getElementById("levelDisplay").textContent = `Level: ${gameState.level}`;
     };
 
     const updatePointsDisplay = () => {
@@ -443,7 +448,12 @@
         pointsDisplay.textContent = "Winnaar";
         clearInterval(timerInterval); //timer stoppen 
         gameState.timerActive = false;
+
+        setTimeout(() => {
+          resetGame();
+        }, 5000);
         return;
+
       } else {
         pointsDisplay.textContent = `Points: ${gameState.points}`;
       }
