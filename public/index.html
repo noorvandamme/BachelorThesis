@@ -40,10 +40,10 @@
             <h2>Game Over!</h2>
           </div>
           <!-- Container voor de Lottie animatie -->
-          <div id="effect1-container" style="display: none; width: 400px; height: 400px;"></div>
-          <div id="effect2-container" style="display: none; width: 400px; height: 400px;"></div>
-          <div id="effect3-container" style="display: none; width: 400px; height: 400px;"></div>
-          <div id="effect4-container" style="display: none; width: 400px; height: 400px;"></div>
+          <div id="slot1-container" style="display: none; width: 400px; height: 400px;"></div>
+          <div id="slot2-container" style="display: none; width: 400px; height: 400px;"></div>
+          <div id="slot3-container" style="display: none; width: 400px; height: 400px;"></div>
+          <div id="slot4-container" style="display: none; width: 400px; height: 400px;"></div>
         </div>
       </div>
     </div>
@@ -205,32 +205,32 @@
       //geen weizigingen meer aanbrengen wnr spel gedaan is
       if (gameState.level === 4) return;
 
-      let effect1 = lottie.loadAnimation({
-        container: document.getElementById('effect1-container'),// container waar animatie komt 
+      let slot1 = lottie.loadAnimation({
+        container: document.getElementById('slot1-container'),// container waar animatie komt 
         renderer: 'svg',
         loop: false,
         autoplay: false,
         path: 'https://lottie.host/e63bd355-77f6-4d02-bf33-7642c530cdea/9NZV1bWT8m.json'
       });
 
-      let effect2 = lottie.loadAnimation({
-        container: document.getElementById('effect2-container'),// container waar animatie komt 
+      let slot2 = lottie.loadAnimation({
+        container: document.getElementById('slot2-container'),// container waar animatie komt 
         renderer: 'svg',
         loop: false,
         autoplay: false,
         path: 'https://lottie.host/171f709d-8f30-4ee1-904a-c1b8b5e8e3e2/xXwExlc1Wh.json'
       });
 
-      let effect3 = lottie.loadAnimation({
-        container: document.getElementById('effect3-container'),// container waar animatie komt 
+      let slot3 = lottie.loadAnimation({
+        container: document.getElementById('slot3-container'),// container waar animatie komt 
         renderer: 'svg',
         loop: false,
         autoplay: false,
         path: 'https://lottie.host/0f5c4ecc-bc27-4b5d-8145-8f35bb3562f8/GNAoEGpLFn.json'
       });
 
-      let effect4 = lottie.loadAnimation({
-        container: document.getElementById('effect4-container'),// container waar animatie komt 
+      let slot4 = lottie.loadAnimation({
+        container: document.getElementById('slot4-container'),// container waar animatie komt 
         renderer: 'svg',
         loop: false,
         autoplay: false,
@@ -262,14 +262,14 @@
               //console.log("Effect triggered for Sensor 0: Broken");
 
               //ANIMATION 
-              if (effect1) effect1.destroy();
+              if (slot1) slot1.destroy();
 
-              const effect1Container = document.getElementById('effect1-container');
-              effect1Container.style.display = 'block';
+              const slot1Container = document.getElementById('slot1-container');
+              slot1Container.style.display = 'block';
 
               //herinitialiseer de animatie zodat elke keer opnieuw begint 
-              effect1 = lottie.loadAnimation({
-                container: document.getElementById('effect1-container'),
+              slot1 = lottie.loadAnimation({
+                container: document.getElementById('slot1-container'),
                 renderer: 'svg',
                 loop: false,
                 autoplay: true,
@@ -286,14 +286,14 @@
           case 1:
             if (sensorState === "Broken") {
               //console.log("Effect triggered for Sensor 1: Broken");
-              if (effect2) effect2.destroy();
+              if (slot2) slot2.destroy();
 
-              const effect2Container = document.getElementById('effect2-container');
-              effect2Container.style.display = 'block';
+              const slot2Container = document.getElementById('slot2-container');
+              slot2Container.style.display = 'block';
 
               //herinitialiseer de animatie zodat elke keer opnieuw begint 
-              effect2 = lottie.loadAnimation({
-                container: document.getElementById('effect2-container'),
+              slot2 = lottie.loadAnimation({
+                container: document.getElementById('slot2-container'),
                 renderer: 'svg',
                 loop: false,
                 autoplay: true,
@@ -310,14 +310,14 @@
           case 2:
             if (sensorState === "Broken") {
               //console.log("Effect triggered for Sensor 2: Broken");
-              if (effect3) effect3.destroy();
+              if (slot3) slot3.destroy();
 
-              const effect3Container = document.getElementById('effect3-container');
-              effect3Container.style.display = 'block';
+              const slot3Container = document.getElementById('slot3-container');
+              slot3Container.style.display = 'block';
 
               //herinitialiseer de animatie zodat elke keer opnieuw begint 
-              effect3 = lottie.loadAnimation({
-                container: document.getElementById('effect3-container'),
+              slot3 = lottie.loadAnimation({
+                container: document.getElementById('slot3-container'),
                 renderer: 'svg',
                 loop: false,
                 autoplay: true,
@@ -334,14 +334,14 @@
           case 3:
             if (sensorState === "Broken") {
               //console.log("Effect triggered for Sensor 3: Broken");
-              if (effect4) effect4.destroy();
+              if (slot4) slot4.destroy();
 
-              const effect4Container = document.getElementById('effect4-container');
-              effect4Container.style.display = 'block';
+              const slot4Container = document.getElementById('slot4-container');
+              slot4Container.style.display = 'block';
 
               //herinitialiseer de animatie zodat elke keer opnieuw begint 
-              effect4 = lottie.loadAnimation({
-                container: document.getElementById('effect4-container'),
+              slot4 = lottie.loadAnimation({
+                container: document.getElementById('slot4-container'),
                 renderer: 'svg',
                 loop: false,
                 autoplay: true,
