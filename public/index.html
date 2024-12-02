@@ -29,7 +29,7 @@
 
         <div id="game-screen" style="display: none;">
           <div id="timer-container">
-            <p id="timerDisplay">Time left: 10s</p>
+            <p id="timerDisplay">Time left: 1min</p>
           </div>
           <div id="points-container">
             <p id="pointsDisplay">Points: 50</p>
@@ -369,7 +369,7 @@
 
       gameState.level = 1; // starten met level 1 
       gameState.points = levels[0].points;
-      gameState.timeLeft = 10;
+      gameState.timeLeft = 60;
       gameState.currentLevelIndex = 0;
 
       updatePointsDisplay();
@@ -394,7 +394,7 @@
     }
 
     const resetTimer = () => {
-      gameState.timeLeft = 10;
+      gameState.timeLeft = 60;
       gameState.timerActive = false;
       document.getElementById("timerDisplay").textContent = `Time Left: ${gameState.timeLeft}s`;
     }
