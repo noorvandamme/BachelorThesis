@@ -190,14 +190,7 @@
     };
 
 
-    let sensorState = "unbroken"; //current sensor state //////////////////////////
-    //let points = 50;
-
-    // let level = 1;
-    // let currentLevelIndex = 0; // Index voor het huidige niveau
-    // let points = levels[currentLevelIndex].points; // Startpunten van het eerste niveau
-    // let timeLeft = 10;
-    // let timerActive = false;
+    let currentState = "unbroken"; //current sensor state 
 
     const processSensorState = (state) => {
       //console.log(`Raw state: ${state}`);
@@ -255,104 +248,112 @@
         let sensor = data.sensor;
         let sensorState = data.state;
 
+        if (sensorState === "Broken") {
+          console.log("broken")
+          currentState = "broken";
+        } else if (sensorState === "Unbroken") {
+          // => betekent dat state van broken naar unbroken is gegaan 
+          if(currentState === "broken"){
+            switch (sensor) {
+            case 0:
 
-        switch (sensor) {
-          case 0:
-            if (sensorState === "Broken") {
-              //console.log("Effect triggered for Sensor 0: Broken");
+              //if (state === "Broken") {
+                //console.log("Effect triggered for Sensor 0: Broken");
 
-              //ANIMATION 
-              if (slot1) slot1.destroy();
+                //ANIMATION 
+                if (slot1) slot1.destroy();
 
-              const slot1Container = document.getElementById('slot1-container');
-              slot1Container.style.display = 'block';
+                const slot1Container = document.getElementById('slot1-container');
+                slot1Container.style.display = 'block';
 
-              //herinitialiseer de animatie zodat elke keer opnieuw begint 
-              slot1 = lottie.loadAnimation({
-                container: document.getElementById('slot1-container'),
-                renderer: 'svg',
-                loop: false,
-                autoplay: true,
-                path: 'https://lottie.host/e63bd355-77f6-4d02-bf33-7642c530cdea/9NZV1bWT8m.json'
-              });
+                //herinitialiseer de animatie zodat elke keer opnieuw begint 
+                slot1 = lottie.loadAnimation({
+                  container: document.getElementById('slot1-container'),
+                  renderer: 'svg',
+                  loop: false,
+                  autoplay: true,
+                  path: 'https://lottie.host/e63bd355-77f6-4d02-bf33-7642c530cdea/9NZV1bWT8m.json'
+                });
 
-              //POINTS
-              gameState.points -= 10;
-              //console.log("Points remaining: " + points);
-              //updatePointsDisplay();
-            }
-            break;
+                //POINTS
+                gameState.points -= 10;
+                //console.log("Points remaining: " + points);
+                //updatePointsDisplay();
+              //}
+              break;
 
-          case 1:
-            if (sensorState === "Broken") {
-              //console.log("Effect triggered for Sensor 1: Broken");
-              if (slot2) slot2.destroy();
+            case 1:
+              //if (state === "Broken") {
+                //console.log("Effect triggered for Sensor 1: Broken");
+                if (slot2) slot2.destroy();
 
-              const slot2Container = document.getElementById('slot2-container');
-              slot2Container.style.display = 'block';
+                const slot2Container = document.getElementById('slot2-container');
+                slot2Container.style.display = 'block';
 
-              //herinitialiseer de animatie zodat elke keer opnieuw begint 
-              slot2 = lottie.loadAnimation({
-                container: document.getElementById('slot2-container'),
-                renderer: 'svg',
-                loop: false,
-                autoplay: true,
-                path: 'https://lottie.host/171f709d-8f30-4ee1-904a-c1b8b5e8e3e2/xXwExlc1Wh.json'
-              });
+                //herinitialiseer de animatie zodat elke keer opnieuw begint 
+                slot2 = lottie.loadAnimation({
+                  container: document.getElementById('slot2-container'),
+                  renderer: 'svg',
+                  loop: false,
+                  autoplay: true,
+                  path: 'https://lottie.host/171f709d-8f30-4ee1-904a-c1b8b5e8e3e2/xXwExlc1Wh.json'
+                });
 
-              //POINTS
-              gameState.points -= 15;
-              //console.log("Points remaining: " + points);
-              //updatePointsDisplay();
-            }
-            break;
+                //POINTS
+                gameState.points -= 15;
+                //console.log("Points remaining: " + points);
+                //updatePointsDisplay();
+              //}
+              break;
 
-          case 2:
-            if (sensorState === "Broken") {
-              //console.log("Effect triggered for Sensor 2: Broken");
-              if (slot3) slot3.destroy();
+            case 2:
+              //if (state === "Broken") {
+                //console.log("Effect triggered for Sensor 2: Broken");
+                if (slot3) slot3.destroy();
 
-              const slot3Container = document.getElementById('slot3-container');
-              slot3Container.style.display = 'block';
+                const slot3Container = document.getElementById('slot3-container');
+                slot3Container.style.display = 'block';
 
-              //herinitialiseer de animatie zodat elke keer opnieuw begint 
-              slot3 = lottie.loadAnimation({
-                container: document.getElementById('slot3-container'),
-                renderer: 'svg',
-                loop: false,
-                autoplay: true,
-                path: 'https://lottie.host/0f5c4ecc-bc27-4b5d-8145-8f35bb3562f8/GNAoEGpLFn.json'
-              });
+                //herinitialiseer de animatie zodat elke keer opnieuw begint 
+                slot3 = lottie.loadAnimation({
+                  container: document.getElementById('slot3-container'),
+                  renderer: 'svg',
+                  loop: false,
+                  autoplay: true,
+                  path: 'https://lottie.host/0f5c4ecc-bc27-4b5d-8145-8f35bb3562f8/GNAoEGpLFn.json'
+                });
 
-              //POINTS
-              gameState.points -= 20;
-              //console.log("Points remaining: " + points);
-              //updatePointsDisplay();
-            }
-            break;
+                //POINTS
+                gameState.points -= 20;
+                //console.log("Points remaining: " + points);
+                //updatePointsDisplay();
+              //}
+              break;
 
-          case 3:
-            if (sensorState === "Broken") {
-              //console.log("Effect triggered for Sensor 3: Broken");
-              if (slot4) slot4.destroy();
+            case 3:
+              //if (state === "Broken") {
+                //console.log("Effect triggered for Sensor 3: Broken");
+                if (slot4) slot4.destroy();
 
-              const slot4Container = document.getElementById('slot4-container');
-              slot4Container.style.display = 'block';
+                const slot4Container = document.getElementById('slot4-container');
+                slot4Container.style.display = 'block';
 
-              //herinitialiseer de animatie zodat elke keer opnieuw begint 
-              slot4 = lottie.loadAnimation({
-                container: document.getElementById('slot4-container'),
-                renderer: 'svg',
-                loop: false,
-                autoplay: true,
-                path: 'https://lottie.host/236d3a25-87cc-43e2-8ccd-7f037c937820/KGclGJjM7B.json'
-              });
+                //herinitialiseer de animatie zodat elke keer opnieuw begint 
+                slot4 = lottie.loadAnimation({
+                  container: document.getElementById('slot4-container'),
+                  renderer: 'svg',
+                  loop: false,
+                  autoplay: true,
+                  path: 'https://lottie.host/236d3a25-87cc-43e2-8ccd-7f037c937820/KGclGJjM7B.json'
+                });
 
-              //POINTS
-              gameState.points -= 25;
-              //console.log("Points remaining: " + points);
-            }
-            break;
+                //POINTS
+                gameState.points -= 25;
+                //console.log("Points remaining: " + points);
+              //}
+              break;
+          }
+          }
         }
 
         updatePointsDisplay();
@@ -406,8 +407,8 @@
       document.getElementById("gameOver").style.display = "block";
 
       setTimeout(() => {
-          resetGame();
-        }, 5000);
+        resetGame();
+      }, 5000);
     };
 
     //reset spel voor nieuwe speler
