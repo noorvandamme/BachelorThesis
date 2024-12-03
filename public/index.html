@@ -8,6 +8,7 @@
   <!-- Voeg de Lottie-web library toe -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.10/lottie.min.js"></script>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://use.typekit.net/mdg8xdv.css">
 </head>
 
 <body>
@@ -22,7 +23,10 @@
       <div id="connected" style="display: none;">
         <div>Connected</div>
         <div id="start-screen">
-          <h1>Kies je vijand</h1>
+          <h1 class="start__instruction">Kies je vijand</h1>
+          <div class="start__subinstruction">door op de knop te drukken</div>
+          <img src="assets/cruncher.png" alt="Cruncher" class="start__character character--one">
+          <img src="assets/muncher.png" alt="Muncher" class="start__character character--two">
           <button id="character1Button">Character 1</button>
           <button id="character2Button">Character 2</button>
         </div>
@@ -371,7 +375,7 @@
         updatePointsDisplay();
 
       } catch (error) {
-        console.error("Failed to parse JSON:", error); 
+        console.error("Failed to parse JSON:", error);
       }
     };
 
@@ -383,10 +387,10 @@
         const buttonData = JSON.parse(value.trim());
 
         if (buttonData.button) {
-        
+
           const buttonId = buttonData.button
 
-          if (!buttonStates[buttonId]){
+          if (!buttonStates[buttonId]) {
             buttonStates[buttonId] = true;
             console.log("button pressed:", buttonId)
             handleButtonPressed(buttonId);
@@ -401,11 +405,11 @@
     const handleButtonPressed = (buttonId) => {
       const gameScreen = document.getElementById("game-screen");
 
-      if(buttonId === 'button1'){
+      if (buttonId === 'button1') {
         //enemy 1
         document.body.style.backgroundColor = "yellow"
         console.log('enemy 1 gekozen')
-      } else  if(buttonId === 'button2'){
+      } else if (buttonId === 'button2') {
         //enemy 2
         document.body.style.backgroundColor = "purple"
         console.log('enemy 2 gekozen')
