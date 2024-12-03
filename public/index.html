@@ -375,27 +375,28 @@
       }
     };
 
-    let lastButtonPressTime = 0;  
-    const debounceInterval = 5;
+    let buttonStates = {}; //actieve staat van knop bijhouden 
 
     const processButtonState = (value) => {
       try {
         // Parse de JSON-string van de knop
-        const parsed = JSON.parse(value.trim());
+        const buttonData = JSON.parse(value.trim());
 
-        // Controleer of het een button-object is
-        if (parsed.button) {
-          const currentTime = Date.now();
-          console.log("Button Pressed:", parsed.button);
-          // Verwerk de knopstatus
-          //handleButtonPress(parsed.button);
+        if (buttonData.button) {
+        
+          const buttonId = buttonData.button
 
-          if (currentTime - lastButtonPressTime > debounceInterval) {
-            console.log("Button Pressed:", parsed.button);
-            //handleButtonPress(parsed.button);  // Verwerk de knopdruk
-
-            lastButtonPressTime = currentTime;  // Update het moment van de laatste knopdruk
+          if (!buttonStates[buttonId]){
+            buttonStates[buttonId] = true;
+            console.log("button pressed:", buttonId)
+            //functie
           }
+          // if (currentTime - lastButtonPressTime > debounceInterval) {
+          //   console.log("Button Pressed:", buttonData.button);
+          //   //handleButtonPress(buttonData.button);  // Verwerk de knopdruk
+
+          //   lastButtonPressTime = currentTime;  // Update het moment van de laatste knopdruk
+          // }
         }
 
       } catch (error) {
@@ -468,6 +469,8 @@
       document.getElementById("pointsDisplay").textContent = `Points: ${gameState.points}`;
       document.getElementById("pointsProgress").value = gameState.points;
       document.getElementById("levelDisplay").textContent = `Level: ${gameState.level}`;
+
+      buttonStates = {};
     };
 
     const oldUpdatePointsDisplay = () => {
