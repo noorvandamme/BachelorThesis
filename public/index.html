@@ -8,6 +8,7 @@
   <!-- Voeg de Lottie-web library toe -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.10/lottie.min.js"></script>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="https://use.typekit.net/mdg8xdv.css">
 </head>
 
@@ -25,8 +26,10 @@
         <div id="start-screen">
           <img class="start__image image--title" src="assets/title.png" alt="monsterPOP">
           <h1 class="hidden">monsterPOP</h1>
-          <h2 class="start__instruction">Kies je vijand</h2>
-          <div class="start__subinstruction">door op de knop te drukken</div>
+          <div class="start__instruction">
+            <h2 class="instruction__firt">Kies je vijand</h2>
+            <div class="instruction__second">door op de knop te drukken</div>
+          </div>
           <img src="assets/cruncher.png" alt="Cruncher" class="start__image image--character1">
           <img src="assets/muncher.png" alt="Muncher" class="start__image image--character2">
         </div>
@@ -487,7 +490,7 @@
           gameState.timerActive = false;
           handleGameOver(); //gameover 
         }
-      }, 1000); // update seconden 
+      }, 6000); // update seconden 
     }
 
     // const resetTimer = () => {
@@ -543,11 +546,12 @@
       pointsDisplay.textContent = `Points: ${gameState.points}`;
 
 
+      //checken wnr naar next level
       if (gameState.points <= 0 && gameState.currentLevelIndex < levels.length - 1) {
         // 3 seconden wachten vooraleer naar next level zodat UI kan updaten 
         setTimeout(() => {
           nextLevel();
-        }, 3000);
+        }, 1000);
       } else if (gameState.currentLevelIndex === levels.length - 1) {
         pointsDisplay.textContent = "Winnaar";
         clearInterval(timerInterval);
