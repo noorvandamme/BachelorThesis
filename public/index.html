@@ -215,16 +215,30 @@
     let currentState = "unbroken"; //current sensor state 
 
     let currentLevelAnimation = null;
+    let selectedMonster = 'monster1';
+
     const levelAnimations = {
-      1: 'https://lottie.host/e4e0a1a5-a947-4840-8811-f4d69636128c/eArUA3TbYf.json', // Level 1 animatie
-      2: 'https://lottie.host/49838bde-6c15-40a3-8080-3beb70d97324/v0JrBmYqQQ.json', // Level 2 animatie
-      3: 'https://lottie.host/a50b5754-4764-451b-a300-e4a5fd50f4f0/2nCmcY8sR3.json', // Level 3 animatie
+      monster1: {
+        1: 'https://lottie.host/e4e0a1a5-a947-4840-8811-f4d69636128c/eArUA3TbYf.json',
+        2: 'https://lottie.host/49838bde-6c15-40a3-8080-3beb70d97324/v0JrBmYqQQ.json',
+        3: 'https://lottie.host/a50b5754-4764-451b-a300-e4a5fd50f4f0/2nCmcY8sR3.json',
+      },
+      monster2: {
+        1: 'https://lottie.host/8ba859a8-2f5a-42cd-8282-adfc6c30b667/TTbjkMLUtA.json',
+        2: 'https://lottie.host/916617e4-d473-4443-b7d3-8edeca5264dc/fyqJQOdDff.json',
+        3: 'https://lottie.host/387c93cc-b37a-49cc-86e1-24852c88e8e5/1xHuigzBkt.json',
+      },
     };
+    // const levelAnimations = {
+    //   1: 'https://lottie.host/e4e0a1a5-a947-4840-8811-f4d69636128c/eArUA3TbYf.json', // Level 1 animatie
+    //   2: 'https://lottie.host/49838bde-6c15-40a3-8080-3beb70d97324/v0JrBmYqQQ.json', // Level 2 animatie
+    //   3: 'https://lottie.host/a50b5754-4764-451b-a300-e4a5fd50f4f0/2nCmcY8sR3.json', // Level 3 animatie
+    // };
 
     const effectAnimations = {
       1: 'https://lottie.host/e63bd355-77f6-4d02-bf33-7642c530cdea/9NZV1bWT8m.json', // Level 1 animatie
-      2: 'https://lottie.host/171f709d-8f30-4ee1-904a-c1b8b5e8e3e2/xXwExlc1Wh.json', 
-      3: 'https://lottie.host/0f5c4ecc-bc27-4b5d-8145-8f35bb3562f8/GNAoEGpLFn.json', 
+      2: 'https://lottie.host/171f709d-8f30-4ee1-904a-c1b8b5e8e3e2/xXwExlc1Wh.json',
+      3: 'https://lottie.host/0f5c4ecc-bc27-4b5d-8145-8f35bb3562f8/GNAoEGpLFn.json',
       4: 'https://lottie.host/236d3a25-87cc-43e2-8ccd-7f037c937820/KGclGJjM7B.json',
     };
 
@@ -432,12 +446,12 @@
       const gameScreen = document.getElementById("game-screen");
 
       if (buttonId === 'button1') {
-        //enemy 1
+        selectedMonster = 'monster1'; 
         //document.body.style.backgroundColor = "yellow"
 
         console.log('enemy 1 gekozen')
       } else if (buttonId === 'button2') {
-        //enemy 2
+        selectedMonster = 'monster2';
         //document.body.style.backgroundColor = "purple"
         console.log('enemy 2 gekozen')
       }
@@ -558,14 +572,14 @@
       destroyCurrentAnimation(); // Verwijder de oude animatie
 
       //juiste animation voor juiste level
-      const animationPath = levelAnimations[level];
+      const animationPath = levelAnimations[selectedMonster][level];
 
       //checken of er een animation is geselecteerd
       if (animationPath) {
         currentLevelAnimation = lottie.loadAnimation({
           container: document.getElementById('level-animation-container'),
           renderer: 'svg',
-          loop: false,
+          loop: true,
           autoplay: true,
           path: animationPath,
         });
