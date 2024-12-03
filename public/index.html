@@ -31,15 +31,23 @@
           <img src="assets/muncher.png" alt="Muncher" class="start__image image--character2">
         </div>
 
+
         <div id="game-screen" style="display: none;">
-          <div id="timer-container">
-            <p id="timerDisplay">Time left: 1min</p>
+          <div id="level-animation-container" width: 400px; height: 400px;"></div>
+
+          <div class="screen__top">
+            <div class="screen__timer" id="timer-container">
+              <p class="timer__number" id="timerDisplay"><svg width="24" height="24" xmlns="http://www.w3.org/2000/svg"
+                  fill-rule="evenodd" clip-rule="evenodd">
+                  <path
+                    d="M12 0c6.623 0 12 5.377 12 12s-5.377 12-12 12-12-5.377-12-12 5.377-12 12-12zm0 1c6.071 0 11 4.929 11 11s-4.929 11-11 11-11-4.929-11-11 4.929-11 11-11zm0 11h6v1h-7v-9h1v8z" />
+                </svg>1min</p>
+            </div>
+            <div class="screen__level" id="levelDisplay">Level: 1</div>
+            <div class="screen__icons">
+              <img src="assets/levelicons.png" alt="">
+            </div>
           </div>
-          <div id="points-container">
-            <p id="pointsDisplay">Points: 10</p>
-            <progress id="pointsProgress" value="10" max="10"></progress> <!-- Progress bar -->
-          </div>
-          <div id="levelDisplay">Level: 1</div>
           <div id="gameOver" style="display: none;">
             <h2>Game Over!</h2>
           </div>
@@ -48,6 +56,10 @@
           <div id="slot2-container" style="display: none; width: 400px; height: 400px;"></div>
           <div id="slot3-container" style="display: none; width: 400px; height: 400px;"></div>
           <div id="slot4-container" style="display: none; width: 400px; height: 400px;"></div>
+          <div id="points-container">
+            <p class="hidden" id="pointsDisplay">Points: 10</p>
+            <progress id="pointsProgress" value="10" max="10"></progress> <!-- Progress bar -->
+          </div>
         </div>
       </div>
     </div>
@@ -201,6 +213,20 @@
 
 
     let currentState = "unbroken"; //current sensor state 
+
+    let currentLevelAnimation = null;
+    const levelAnimations = {
+      1: 'https://lottie.host/e4e0a1a5-a947-4840-8811-f4d69636128c/eArUA3TbYf.json', // Level 1 animatie
+      2: 'https://lottie.host/49838bde-6c15-40a3-8080-3beb70d97324/v0JrBmYqQQ.json', // Level 2 animatie
+      3: 'https://lottie.host/a50b5754-4764-451b-a300-e4a5fd50f4f0/2nCmcY8sR3.json', // Level 3 animatie
+    };
+
+    const effectAnimations = {
+      1: 'https://lottie.host/e63bd355-77f6-4d02-bf33-7642c530cdea/9NZV1bWT8m.json', // Level 1 animatie
+      2: 'https://lottie.host/171f709d-8f30-4ee1-904a-c1b8b5e8e3e2/xXwExlc1Wh.json', 
+      3: 'https://lottie.host/0f5c4ecc-bc27-4b5d-8145-8f35bb3562f8/GNAoEGpLFn.json', 
+      4: 'https://lottie.host/236d3a25-87cc-43e2-8ccd-7f037c937820/KGclGJjM7B.json',
+    };
 
     const processSensorState = (value) => {
       //console.log(`Raw state: ${state}`);
@@ -407,11 +433,12 @@
 
       if (buttonId === 'button1') {
         //enemy 1
-        document.body.style.backgroundColor = "yellow"
+        //document.body.style.backgroundColor = "yellow"
+
         console.log('enemy 1 gekozen')
       } else if (buttonId === 'button2') {
         //enemy 2
-        document.body.style.backgroundColor = "purple"
+        //document.body.style.backgroundColor = "purple"
         console.log('enemy 2 gekozen')
       }
 
@@ -428,6 +455,7 @@
       gameState.currentLevelIndex = 0;
 
       updatePointsDisplay();
+      updateLevelAnimation(1)
 
       startTimer();
     }
@@ -517,6 +545,33 @@
     };
 
 
+
+    const destroyCurrentAnimation = () => {
+      if (currentLevelAnimation) {
+        currentLevelAnimation.destroy(); // Verwijder de huidige animatie
+        currentLevelAnimation = null; // Reset de huidige animatie
+      }
+    };
+
+
+    const updateLevelAnimation = (level) => {
+      destroyCurrentAnimation(); // Verwijder de oude animatie
+
+      //juiste animation voor juiste level
+      const animationPath = levelAnimations[level];
+
+      //checken of er een animation is geselecteerd
+      if (animationPath) {
+        currentLevelAnimation = lottie.loadAnimation({
+          container: document.getElementById('level-animation-container'),
+          renderer: 'svg',
+          loop: false,
+          autoplay: true,
+          path: animationPath,
+        });
+      }
+    };
+
     const nextLevel = () => {
       if (gameState.currentLevelIndex < levels.length - 1) {
         gameState.currentLevelIndex++;
@@ -524,6 +579,7 @@
         gameState.points = levels[gameState.currentLevelIndex].points;
         //resetTimer(); -> OPTIE 
         updatePointsDisplay();
+        updateLevelAnimation(gameState.level)
       } else {
         console.log("Winnaar");
       }

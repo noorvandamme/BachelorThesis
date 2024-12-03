@@ -25,6 +25,7 @@ html {
 body{
     background-color: black;
     font-family: "owners", sans-serif;
+    color: #FFF9C9;
 }
 
 .hidden{
@@ -57,4 +58,41 @@ body{
     text-align: center;
     font-size: 2rem;
     letter-spacing: 1px;
+}
+
+.game__level{
+    font-size: 1rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-align: center;
+}
+
+.timer__number{
+    font-size: 1rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-align: center;
+}
+
+.screen__top{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.screen__timer{
+    text-align: right;
+}
+
+.screen__level{
+    text-align: center;
+    flex-grow: 1;
+}
+
+.screen__icons{
+    text-align: left;
+    max-width: 100px;
 }
