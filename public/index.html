@@ -371,7 +371,7 @@
         updatePointsDisplay();
 
       } catch (error) {
-        console.error("Failed to parse JSON:", error);  // Foutmelding als JSON niet goed kan worden geparsed
+        console.error("Failed to parse JSON:", error); 
       }
     };
 
@@ -389,14 +389,8 @@
           if (!buttonStates[buttonId]){
             buttonStates[buttonId] = true;
             console.log("button pressed:", buttonId)
-            //functie
+            handleButtonPressed(buttonId);
           }
-          // if (currentTime - lastButtonPressTime > debounceInterval) {
-          //   console.log("Button Pressed:", buttonData.button);
-          //   //handleButtonPress(buttonData.button);  // Verwerk de knopdruk
-
-          //   lastButtonPressTime = currentTime;  // Update het moment van de laatste knopdruk
-          // }
         }
 
       } catch (error) {
@@ -404,13 +398,29 @@
       }
     };
 
+    const handleButtonPressed = (buttonId) => {
+      const gameScreen = document.getElementById("game-screen");
+
+      if(buttonId === 'button1'){
+        //enemy 1
+        document.body.style.backgroundColor = "yellow"
+        console.log('enemy 1 gekozen')
+      } else  if(buttonId === 'button2'){
+        //enemy 2
+        document.body.style.backgroundColor = "purple"
+        console.log('enemy 2 gekozen')
+      }
+
+      startGame();
+    }
+
     const startGame = () => {
       document.getElementById("start-screen").style.display = "none"; // Verberg het startscherm
       document.getElementById("game-screen").style.display = "block"; // Toon het game-scherm
 
       gameState.level = 1; // starten met level 1 
       gameState.points = levels[0].points;
-      gameState.timeLeft = 60;
+      gameState.timeLeft = 10;
       gameState.currentLevelIndex = 0;
 
       updatePointsDisplay();
@@ -434,11 +444,11 @@
       }, 1000); // update seconden 
     }
 
-    const resetTimer = () => {
-      gameState.timeLeft = 60;
-      gameState.timerActive = false;
-      document.getElementById("timerDisplay").textContent = `Time Left: ${gameState.timeLeft}s`;
-    }
+    // const resetTimer = () => {
+    //   gameState.timeLeft = 60;
+    //   gameState.timerActive = false;
+    //   document.getElementById("timerDisplay").textContent = `Time Left: ${gameState.timeLeft}s`;
+    // }
 
     const handleGameOver = () => {
       //level instellen op level 4 
@@ -456,7 +466,7 @@
     const resetGame = () => {
       gameState.level = 1;
       gameState.points = levels[0].points;
-      gameState.timeLeft = 10;
+      gameState.timeLeft = 60;
       gameState.timerActive = false;
       gameState.currentLevelIndex = 0;
 
@@ -473,45 +483,6 @@
       buttonStates = {};
     };
 
-    const oldUpdatePointsDisplay = () => {
-      const pointsDisplay = document.getElementById("pointsDisplay");
-      const pointsProgress = document.getElementById("pointsProgress");
-      document.getElementById("levelDisplay").textContent = `Level: ${gameState.level}`;
-
-      //points kunnen niet negatief worden 
-      gameState.points = Math.max(gameState.points, 0);
-
-      const maxPoints = levels[gameState.currentLevelIndex].points;  //max punten voor huidige level instellen 
-      pointsProgress.max = maxPoints;
-
-      const progressValue = Math.max(gameState.points);  //value is resterende leven 
-      pointsProgress.value = progressValue;
-
-      if (gameState.points <= 0 && gameState.currentLevelIndex < levels.length - 1) {
-        //3 seconden wachten vooraleer naar next level zodat UI kan updaten 
-        setTimeout(() => {
-          nextLevel();
-        }, 3000);
-      } else if (gameState.currentLevelIndex === levels.length - 1) {
-        pointsDisplay.textContent = "Winnaar";
-        clearInterval(timerInterval); //timer stoppen 
-        gameState.timerActive = false;
-
-        setTimeout(() => {
-          resetGame();
-        }, 5000);
-        return;
-
-      } else {
-        pointsDisplay.textContent = `Points: ${gameState.points}`;
-      }
-
-      if (gameState.points <= 0 && gameState.currentLevelIndex < levels.length - 1) {
-        nextLevel(); //schakel naar volgende level wnr er 0 of minder punten zijn en gebasseerd op current level
-      }
-
-      console.log("Max Points:", maxPoints, "Current Points:", gameState.points, "Progress Value:", progressValue);
-    };
 
     const updatePointsDisplay = () => {
       const pointsDisplay = document.getElementById("pointsDisplay");
