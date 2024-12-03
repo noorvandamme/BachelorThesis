@@ -32,8 +32,8 @@
             <p id="timerDisplay">Time left: 1min</p>
           </div>
           <div id="points-container">
-            <p id="pointsDisplay">Points: 50</p>
-            <progress id="pointsProgress" value="50" max="50"></progress> <!-- Progress bar -->
+            <p id="pointsDisplay">Points: 10</p>
+            <progress id="pointsProgress" value="10" max="10"></progress> <!-- Progress bar -->
           </div>
           <div id="levelDisplay">Level: 1</div>
           <div id="gameOver" style="display: none;">
@@ -63,9 +63,9 @@
     };
 
     const levels = [
-      { level: 1, points: 50 },
-      { level: 2, points: 80 },
-      { level: 3, points: 100 },
+      { level: 1, points: 10 },
+      { level: 2, points: 20 },
+      { level: 3, points: 30 },
       { level: 4, points: 0 }
     ];
 
@@ -253,11 +253,11 @@
           currentState = "broken";
         } else if (sensorState === "Unbroken") {
           // => betekent dat state van broken naar unbroken is gegaan 
-          if(currentState === "broken"){
+          if (currentState === "broken") {
             switch (sensor) {
-            case 0:
+              case 0:
 
-              //if (state === "Broken") {
+                //if (state === "Broken") {
                 //console.log("Effect triggered for Sensor 0: Broken");
 
                 //ANIMATION 
@@ -276,14 +276,14 @@
                 });
 
                 //POINTS
-                gameState.points -= 10;
+                gameState.points -= 20;
                 //console.log("Points remaining: " + points);
                 //updatePointsDisplay();
-              //}
-              break;
+                //}
+                break;
 
-            case 1:
-              //if (state === "Broken") {
+              case 1:
+                //if (state === "Broken") {
                 //console.log("Effect triggered for Sensor 1: Broken");
                 if (slot2) slot2.destroy();
 
@@ -300,14 +300,14 @@
                 });
 
                 //POINTS
-                gameState.points -= 15;
+                gameState.points -= 30;
                 //console.log("Points remaining: " + points);
                 //updatePointsDisplay();
-              //}
-              break;
+                //}
+                break;
 
-            case 2:
-              //if (state === "Broken") {
+              case 2:
+                //if (state === "Broken") {
                 //console.log("Effect triggered for Sensor 2: Broken");
                 if (slot3) slot3.destroy();
 
@@ -324,14 +324,14 @@
                 });
 
                 //POINTS
-                gameState.points -= 20;
+                gameState.points -= 40;
                 //console.log("Points remaining: " + points);
                 //updatePointsDisplay();
-              //}
-              break;
+                //}
+                break;
 
-            case 3:
-              //if (state === "Broken") {
+              case 3:
+                //if (state === "Broken") {
                 //console.log("Effect triggered for Sensor 3: Broken");
                 if (slot4) slot4.destroy();
 
@@ -348,11 +348,11 @@
                 });
 
                 //POINTS
-                gameState.points -= 25;
+                gameState.points -= 10;
                 //console.log("Points remaining: " + points);
-              //}
-              break;
-          }
+                //}
+                break;
+            }
           }
         }
 
@@ -430,7 +430,7 @@
       document.getElementById("levelDisplay").textContent = `Level: ${gameState.level}`;
     };
 
-    const updatePointsDisplay = () => {
+    const oldUpdatePointsDisplay = () => {
       const pointsDisplay = document.getElementById("pointsDisplay");
       const pointsProgress = document.getElementById("pointsProgress");
       document.getElementById("levelDisplay").textContent = `Level: ${gameState.level}`;
@@ -444,7 +444,12 @@
       const progressValue = Math.max(gameState.points);  //value is resterende leven 
       pointsProgress.value = progressValue;
 
-      if (gameState.currentLevelIndex === levels.length - 1) {
+      if (gameState.points <= 0 && gameState.currentLevelIndex < levels.length - 1) {
+        //3 seconden wachten vooraleer naar next level zodat UI kan updaten 
+        setTimeout(() => {
+          nextLevel();
+        }, 3000);
+      } else if (gameState.currentLevelIndex === levels.length - 1) {
         pointsDisplay.textContent = "Winnaar";
         clearInterval(timerInterval); //timer stoppen 
         gameState.timerActive = false;
@@ -464,6 +469,35 @@
 
       console.log("Max Points:", maxPoints, "Current Points:", gameState.points, "Progress Value:", progressValue);
     };
+
+    const updatePointsDisplay = () => {
+      const pointsDisplay = document.getElementById("pointsDisplay");
+      const pointsProgress = document.getElementById("pointsProgress");
+      document.getElementById("levelDisplay").textContent = `Level: ${gameState.level}`;
+
+      gameState.points = Math.max(gameState.points, 0); 
+      const maxPoints = levels[gameState.currentLevelIndex].points; 
+      pointsProgress.max = maxPoints;
+
+      pointsProgress.value = gameState.points; 
+      pointsDisplay.textContent = `Points: ${gameState.points}`;
+
+      
+      if (gameState.points <= 0 && gameState.currentLevelIndex < levels.length - 1) {
+        // 3 seconden wachten vooraleer naar next level zodat UI kan updaten 
+        setTimeout(() => {
+          nextLevel();
+        }, 3000); 
+      } else if (gameState.currentLevelIndex === levels.length - 1) {
+        pointsDisplay.textContent = "Winnaar";
+        clearInterval(timerInterval);
+        gameState.timerActive = false;
+        setTimeout(() => {
+          resetGame();
+        }, 5000);
+      }
+    };
+
 
     const nextLevel = () => {
       if (gameState.currentLevelIndex < levels.length - 1) {
