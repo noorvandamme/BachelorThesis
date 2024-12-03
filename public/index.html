@@ -178,7 +178,13 @@
               break;
             }
             if (value) {
-              processSensorState(value.trim());
+              const json = JSON.parse(value.trim());
+
+              if (json.button) {
+                processButtonState(value);  // Als het een knop is, roep de knopverwerkingsfunctie aan
+              } else if (json.sensor !== undefined && json.state) {
+                processSensorState(value);  // Als het een sensor is, roep de sensorverwerkingsfunctie aan
+              }
             }
           }
         } catch (error) {
@@ -192,8 +198,10 @@
 
     let currentState = "unbroken"; //current sensor state 
 
-    const processSensorState = (state) => {
+    const processSensorState = (value) => {
       //console.log(`Raw state: ${state}`);
+
+      //console.log(`Button: ${button}`);
 
       //geen weizigingen meer aanbrengen wnr spel gedaan is
       if (gameState.level === 4) return;
@@ -232,7 +240,9 @@
 
       try {
         // Parse de JSON-string die we van de Arduino krijgen
-        const data = JSON.parse(state);
+        const data = JSON.parse(value);
+        //const dataButtons = JSON.parse(button);
+        //console.log(button)
         //console.log("Parsed data:", data);
         //console.log(data.sensor)
         //console.log(data.state)
@@ -247,6 +257,8 @@
 
         let sensor = data.sensor;
         let sensorState = data.state;
+        console.log("Parsed data:", value);
+        console.log("sensor:", data.sensor)
 
         if (sensorState === "Broken") {
           console.log("broken")
@@ -363,6 +375,34 @@
       }
     };
 
+    let lastButtonPressTime = 0;  
+    const debounceInterval = 5;
+
+    const processButtonState = (value) => {
+      try {
+        // Parse de JSON-string van de knop
+        const parsed = JSON.parse(value.trim());
+
+        // Controleer of het een button-object is
+        if (parsed.button) {
+          const currentTime = Date.now();
+          console.log("Button Pressed:", parsed.button);
+          // Verwerk de knopstatus
+          //handleButtonPress(parsed.button);
+
+          if (currentTime - lastButtonPressTime > debounceInterval) {
+            console.log("Button Pressed:", parsed.button);
+            //handleButtonPress(parsed.button);  // Verwerk de knopdruk
+
+            lastButtonPressTime = currentTime;  // Update het moment van de laatste knopdruk
+          }
+        }
+
+      } catch (error) {
+        console.error("Error processing button state:", error);
+      }
+    };
+
     const startGame = () => {
       document.getElementById("start-screen").style.display = "none"; // Verberg het startscherm
       document.getElementById("game-screen").style.display = "block"; // Toon het game-scherm
@@ -475,19 +515,19 @@
       const pointsProgress = document.getElementById("pointsProgress");
       document.getElementById("levelDisplay").textContent = `Level: ${gameState.level}`;
 
-      gameState.points = Math.max(gameState.points, 0); 
-      const maxPoints = levels[gameState.currentLevelIndex].points; 
+      gameState.points = Math.max(gameState.points, 0);
+      const maxPoints = levels[gameState.currentLevelIndex].points;
       pointsProgress.max = maxPoints;
 
-      pointsProgress.value = gameState.points; 
+      pointsProgress.value = gameState.points;
       pointsDisplay.textContent = `Points: ${gameState.points}`;
 
-      
+
       if (gameState.points <= 0 && gameState.currentLevelIndex < levels.length - 1) {
         // 3 seconden wachten vooraleer naar next level zodat UI kan updaten 
         setTimeout(() => {
           nextLevel();
-        }, 3000); 
+        }, 3000);
       } else if (gameState.currentLevelIndex === levels.length - 1) {
         pointsDisplay.textContent = "Winnaar";
         clearInterval(timerInterval);
