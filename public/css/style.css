@@ -27,9 +27,18 @@ body{
     font-family: "owners", sans-serif;
 }
 
-.start__character{
+.hidden{
+    visibility: hidden;
+}
+
+.start__image{
     width: 100%;
     height: auto;
+}
+
+.image--title{
+    padding-left: 3rem;
+    padding-right: 3rem;
 }
 
 .start__instruction{
