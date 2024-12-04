@@ -36,8 +36,6 @@
 
 
         <div id="game-screen" style="display: none;">
-          <div id="level-animation-container" width: 400px; height: 400px;"></div>
-
           <div class="screen__top">
             <div class="screen__timer" id="timer-container">
               <p class="timer__number" id="timerDisplay"><svg width="24" height="24" xmlns="http://www.w3.org/2000/svg"
@@ -51,6 +49,7 @@
               <img src="assets/levelicons.png" alt="">
             </div>
           </div>
+          <div id="level-animation-container" width: 400px; height: 400px;"></div>
           <div id="gameOver" style="display: none;">
             <h2>Game Over!</h2>
           </div>
@@ -59,9 +58,9 @@
           <div id="slot2-container" style="display: none; width: 400px; height: 400px;"></div>
           <div id="slot3-container" style="display: none; width: 400px; height: 400px;"></div>
           <div id="slot4-container" style="display: none; width: 400px; height: 400px;"></div>
-          <div id="points-container">
+          <div class="game__points" id="points-container">
             <p class="hidden" id="pointsDisplay">Points: 10</p>
-            <progress id="pointsProgress" value="10" max="10"></progress> <!-- Progress bar -->
+            <progress class="points__progress" id="pointsProgress" value="10" max="10"></progress> <!-- Progress bar -->
           </div>
         </div>
       </div>
@@ -449,7 +448,7 @@
       const gameScreen = document.getElementById("game-screen");
 
       if (buttonId === 'button1') {
-        selectedMonster = 'monster1'; 
+        selectedMonster = 'monster1';
         //document.body.style.backgroundColor = "yellow"
 
         console.log('enemy 1 gekozen')
