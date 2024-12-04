@@ -22,7 +22,7 @@
         <button id="connectButton">Connect</button>
       </div>
       <div id="connected" style="display: none;">
-        <div>Connected</div>
+        <div class="hidden">Connected</div>
         <div id="start-screen">
           <img class="start__image image--title" src="assets/title.png" alt="monsterPOP">
           <h1 class="hidden">monsterPOP</h1>
@@ -33,8 +33,6 @@
           <img src="assets/cruncher.png" alt="Cruncher" class="start__image image--character1">
           <img src="assets/muncher.png" alt="Muncher" class="start__image image--character2">
         </div>
-
-
         <div id="game-screen" style="display: none;">
           <div class="screen__top">
             <div class="screen__timer" id="timer-container">
@@ -44,20 +42,22 @@
                     d="M12 0c6.623 0 12 5.377 12 12s-5.377 12-12 12-12-5.377-12-12 5.377-12 12-12zm0 1c6.071 0 11 4.929 11 11s-4.929 11-11 11-11-4.929-11-11 4.929-11 11-11zm0 11h6v1h-7v-9h1v8z" />
                 </svg>1min</p>
             </div>
-            <div class="screen__level" id="levelDisplay">Level: 1</div>
+            <div class="screen__level" id="levelDisplay">Level 1</div>
             <div class="screen__icons">
               <img src="assets/levelicons.png" alt="">
             </div>
           </div>
-          <div id="level-animation-container" width: 400px; height: 400px;"></div>
+          <!-- Container voor de Lottie animatie -->
+          <div class="game__animations">
+            <div id="slot1-container" style="display: none; width: 600px; height: 600px;"></div>
+            <div id="slot2-container" style="display: none; width: 600px; height: 600px;"></div>
+            <div id="slot3-container" style="display: none; width: 600px; height: 600px;"></div>
+            <div id="slot4-container" style="display: none; width: 600px; height: 600px;"></div>
+            <div id="level-animation-container" style="width: 600px; height: 600px;"></div>
+          </div>
           <div id="gameOver" style="display: none;">
             <h2>Game Over!</h2>
           </div>
-          <!-- Container voor de Lottie animatie -->
-          <div id="slot1-container" style="display: none; width: 400px; height: 400px;"></div>
-          <div id="slot2-container" style="display: none; width: 400px; height: 400px;"></div>
-          <div id="slot3-container" style="display: none; width: 400px; height: 400px;"></div>
-          <div id="slot4-container" style="display: none; width: 400px; height: 400px;"></div>
           <div class="game__points" id="points-container">
             <p class="hidden" id="pointsDisplay">Points: 10</p>
             <progress class="points__progress" id="pointsProgress" value="10" max="10"></progress> <!-- Progress bar -->
@@ -483,7 +483,7 @@
       timerInterval = setInterval(() => {
         if (gameState.timeLeft > 0) {//als er tijd over is 
           gameState.timeLeft--;
-          document.getElementById("timerDisplay").textContent = `Time left: ${gameState.timeLeft}s`;
+          document.getElementById("timerDisplay").textContent = `${gameState.timeLeft}s`;
         } else {//geen tijd meer over 
           clearInterval(timerInterval); //stop timer
           gameState.timerActive = false;
@@ -535,7 +535,7 @@
     const updatePointsDisplay = () => {
       const pointsDisplay = document.getElementById("pointsDisplay");
       const pointsProgress = document.getElementById("pointsProgress");
-      document.getElementById("levelDisplay").textContent = `Level: ${gameState.level}`;
+      document.getElementById("levelDisplay").textContent = `Level ${gameState.level}`;
 
       gameState.points = Math.max(gameState.points, 0);
       const maxPoints = levels[gameState.currentLevelIndex].points;
@@ -550,7 +550,7 @@
         // 3 seconden wachten vooraleer naar next level zodat UI kan updaten 
         setTimeout(() => {
           nextLevel();
-        }, 1000);
+        }, 2000);
       } else if (gameState.currentLevelIndex === levels.length - 1) {
         pointsDisplay.textContent = "Winnaar";
         clearInterval(timerInterval);
