@@ -80,11 +80,11 @@
     let isConnected = false;
 
     const gameState = {
-      level: 1,               // Huidig niveau
-      points: 0,              // Huidige punten
-      timeLeft: 10,           // Tijd over in seconden
-      timerActive: false,     // Is de timer actief?
-      currentLevelIndex: 0    // Index van het huidige level in een array van levels
+      level: 1,               
+      points: 0,              
+      timeLeft: 60,           
+      timerActive: false,     
+      currentLevelIndex: 0    
     };
 
     const levels = [
@@ -474,7 +474,7 @@
 
       gameState.level = 1; // starten met level 1 
       gameState.points = levels[0].points;
-      gameState.timeLeft = 10;
+      gameState.timeLeft = 60;
       gameState.currentLevelIndex = 0;
 
       updatePointsDisplay();
@@ -490,13 +490,18 @@
       timerInterval = setInterval(() => {
         if (gameState.timeLeft > 0) {//als er tijd over is 
           gameState.timeLeft--;
-          document.getElementById("timerDisplay").textContent = `${gameState.timeLeft}s`;
+
+          //min and sec 
+          const minutes = Math.floor(gameState.timeLeft / 60);
+          const seconds = gameState.timeLeft % 60;
+
+          document.getElementById("timerDisplay").textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
         } else {//geen tijd meer over 
           clearInterval(timerInterval); //stop timer
           gameState.timerActive = false;
           handleGameOver(); //gameover 
         }
-      }, 6000); // update seconden 
+      }, 1000); // update seconden 
     }
 
     // const resetTimer = () => {
