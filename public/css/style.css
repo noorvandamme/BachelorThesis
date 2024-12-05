@@ -176,7 +176,8 @@ body {
     z-index: 1000;
 }
 
-.game__gameover {
+.game__gameover, 
+.game__winnaar {
     font-size: 2rem;
     text-transform: uppercase;
     font-weight: 700;

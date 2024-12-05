@@ -384,7 +384,8 @@ const updatePointsDisplay = () => {
             nextLevel();
         }, 1000);
     } else if (gameState.currentLevelIndex === levels.length - 1) {
-        pointsDisplay.textContent = "Winnaar";
+        document.getElementById("gameWinnaar").style.display = "block";
+
         clearInterval(timerInterval);
         gameState.timerActive = false;
         setTimeout(() => {
