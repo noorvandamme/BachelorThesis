@@ -176,3 +176,11 @@ body {
     z-index: 1000;
 }
 
+.game__gameover {
+    font-size: 2rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-align: center;
+    font-family: "owners", sans-serif;
+}
