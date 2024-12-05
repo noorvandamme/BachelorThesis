@@ -38,9 +38,9 @@
             <div class="screen__top">
               <div class="screen__icons">
                 <div>
-                  <img src="assets/icon.png" alt="" width="80px">
-                  <img src="assets/icon.png" alt="" width="80px">
-                  <img src="assets/icon.png" alt="" width="80px">
+                  <img class="level__icon" src="assets/icon.png" alt="" width="80px">
+                  <img class="level__icon" src="assets/icon.png" alt="" width="80px">
+                  <img class="level__icon" src="assets/icon.png" alt="" width="80px">
                 </div>
               </div>
               <div class="screen__level" id="levelDisplay">Level 1</div>
@@ -52,12 +52,8 @@
                   </svg>1min</p>
               </div>
             </div>
-            <!-- Container voor de Lottie animatie -->
             <div class="game__animations">
               <div id="effect-container" style="display: none; width: 600px; height: 600px;"></div>
-              <!-- <div id="slot2-container" style="display: none; width: 600px; height: 600px;"></div>
-              <div id="slot3-container" style="display: none; width: 600px; height: 600px;"></div>
-              <div id="slot4-container" style="display: none; width: 600px; height: 600px;"></div> -->
               <div id="level-animation-container" style="width: 600px; height: 600px;"></div>
             </div>
             <div class="game__points" id="points-container">
@@ -281,7 +277,7 @@
           currentState = "broken";
         } else if (sensorState === "Unbroken" && currentState === "broken") {
           // => betekent dat state van broken naar unbroken is gegaan 
-        
+
           const animation = effects[sensor];
           if (animation) {
             const container = document.getElementById('effect-container');
@@ -428,6 +424,12 @@
       document.getElementById("levelDisplay").textContent = `Level: ${gameState.level}`;
 
       buttonStates = {};
+
+      const iconsContainer = document.querySelector('.screen__icons div');
+      const icons = iconsContainer.querySelectorAll('img');
+      icons.forEach(icon => {
+        icon.style.display = 'inline'; //level icons terug zichtbaar 
+      });
     };
 
 
@@ -488,6 +490,17 @@
       }
     };
 
+    // const updateLevelIcons = () => {
+    //   const levelIcons = document.querySelectorAll(".level__icon");
+    //   levelIcons.forEach((icon, index) => {
+    //     if (index < gameState.level) {
+    //       icon.style.display = "block"; 
+    //     } else {
+    //       icon.style.display = "none";
+    //     }
+    //   });
+    // };
+
     const nextLevel = () => {
       if (gameState.currentLevelIndex < levels.length - 1) {
         gameState.currentLevelIndex++;
@@ -495,7 +508,15 @@
         gameState.points = levels[gameState.currentLevelIndex].points;
         //resetTimer(); -> OPTIE 
         updatePointsDisplay();
+        // updateLevelIcons();
         updateLevelAnimation(gameState.level)
+        const iconsContainer = document.querySelector('.screen__icons div');
+        const icons = iconsContainer.querySelectorAll('img');
+
+        if (icons.length > gameState.level - 1) {
+          icons[gameState.level - 1].style.display = 'none';  // Verberg het juiste icoon
+        }
+
       } else {
         console.log("Winnaar");
       }
