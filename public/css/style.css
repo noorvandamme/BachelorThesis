@@ -172,6 +172,7 @@ body {
     display: block;
 }
 
-#slot1-container {
+#effect-container {
     z-index: 1000;
 }
+
