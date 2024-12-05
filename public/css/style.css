@@ -62,6 +62,22 @@ body {
     letter-spacing: 1px;
 }
 
+.screen__interface {
+    display: grid;
+    grid-template-rows: auto auto auto;
+    gap: 1rem;
+}
+
+.screen__top {
+    grid-row: 1;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    font-family: "owners", sans-serif;
+    align-items: center;
+}
+
 .game__level {
     font-size: 1rem;
     text-transform: uppercase;
@@ -80,7 +96,15 @@ body {
     font-family: "owners", sans-serif;
 }
 
-.screen__top {
+
+.screen__level {
+    text-align: center;
+    flex-grow: 1;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+/* .screen__top {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -91,17 +115,10 @@ body {
     text-align: right;
 }
 
-.screen__level {
-    text-align: center;
-    flex-grow: 1;
-    font-family: "owners", sans-serif;
-    font-weight: 700;
-    text-transform: uppercase;
-}
 
 .screen__icons {
     text-align: left;
-}
+} */
 
 .game__points {
     width: 500px;
@@ -110,6 +127,7 @@ body {
     margin: 20px auto;
 
     clip-path: polygon(10% 0%, 95% 10%, 85% 100%, 2% 100%);
+    grid-row: 3;
 }
 
 
@@ -147,12 +165,13 @@ body {
     width: 100%;
     height: 100%;
     display: none;
+    grid-row: 2;
 }
 
 #level-animation-container {
     display: block;
 }
 
-#slot1-container{
+#slot1-container {
     z-index: 1000;
 }
