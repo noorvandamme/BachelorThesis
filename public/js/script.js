@@ -927,19 +927,6 @@ const handleMonsterSelection = (buttonId) => {
     playTransitionAnimation();
 };
 
-const initMonsterSelection = () => {
-    document.getElementById("chooseMonster1").addEventListener("click", () => {
-        handleMonsterSelection('monster1');
-    });
-
-    document.getElementById("chooseMonster2").addEventListener("click", () => {
-        handleMonsterSelection('monster2');
-    });
-};
-
-// Call this function during initialization
-initMonsterSelection();
-
 const displaySupportedState = () => {
     if (hasWebSerial) {
         $notSupported.style.display = "none";
