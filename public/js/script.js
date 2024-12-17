@@ -610,35 +610,88 @@ const playCredits = () => {
         resetGame();
     }, 10000);
 }
-
 //reset spel voor nieuwe speler
 const resetGame = () => {
     gameState.level = 1;
     gameState.points = levels[0].points;
-    gameState.timeLeft = 60;
+    gameState.timeLeft = time;
     gameState.timerActive = false;
     gameState.currentLevelIndex = 0;
 
-    updatePointsDisplay();
-    document.getElementById("gameOver").style.display = "none";
-    document.getElementById("game-screen").style.display = "none";
-    document.getElementById("start-screen").style.display = "block";
-    document.getElementById("level-animation-container").style.display = "block"
+    level1Done = false
+    transitionPlaying = false
+    isBackgroundAnimationPlaying = false;
+    footPlayed = false;
+    gamePlaying = false;
+    footPlaying = false;
 
-    document.getElementById("timerDisplay").textContent = `Time left: ${gameState.timeLeft}s`;
+    buttonStates = {};
+
+    updatePointsDisplay();
+
+    $gameEnd.style.display = "none"
+    $gameScreen.style.display = "none";
+
+    $animationCruncher.style.display = "block"
+    $startScreen.style.display = "block"
+    $imageCruncher.style.display = "none";
+    $selectedImageCruncher.style.display = "none"
+
+    animations.revealStart.goToAndStop(0, true);
+    animations.revealStart.play();
+    animations.revealStart.addEventListener('complete', () => {
+        $imageCruncher.style.display = "block";
+        $animationCruncher.style.display = "none"
+    })
+
+    $animationMuncher.style.display = "block"
+    $imageMuncher.style.display = "none"
+    $selectedImageMuncher.style.display = "none"
+
+    animations.revealStart2.goToAndStop(0, true);
+    animations.revealStart2.play();
+    animations.revealStart2.addEventListener('complete', () => {
+        $imageMuncher.style.display = "block";
+        $animationMuncher.style.display = "none";
+    })
+
+    $startRevealAnimation.style.display = "block"
+    $startTitleImage.style.display = "none"
+
+    animations.revealStartTitle.goToAndStop(0, true);
+    animations.revealStartTitle.play();
+    animations.revealStartTitle.addEventListener('complete', () => {
+        $startRevealAnimation.style.display = "none"
+        $startTitleImage.style.display = "block"
+    })
+
+    document.getElementById("level-animation-container").style.display = "block"
+    document.querySelector(".game__winnaar").style.display = "none";
+    document.querySelector(".game__over").style.display = "none";
+    document.querySelector(".transition__winner").style.display = "none"
+    document.querySelector(".transition__loser").style.display = "none"
+    document.querySelector(".transition__end").style.display = 'none'
+
+
+    document.querySelector(".timer__number").textContent = `${gameState.timeLeft}s`;
     document.getElementById("pointsDisplay").textContent = `Points: ${gameState.points}`;
     document.getElementById("pointsProgress").value = gameState.points;
     document.getElementById("levelDisplay").textContent = `Level: ${gameState.level}`;
 
-    buttonStates = {};
+    const $iconsContainer = document.querySelector('.screen__icons div');
+    const $icons = $iconsContainer.querySelectorAll('img');
+    const defaultIconSrc = 'assets/icon.png';
+    const redIconSrc = 'assets/iconRed.png';
 
-    const iconsContainer = document.querySelector('.screen__icons div');
-    const icons = iconsContainer.querySelectorAll('img');
-    icons.forEach(icon => {
-        icon.style.display = 'inline'; //level icons terug zichtbaar 
+    $icons.forEach((icon, index) => {
+        icon.style.display = 'inline';
+        if (index === 0) {
+            icon.src = redIconSrc;
+        } else {
+            icon.src = defaultIconSrc;
+        }
     });
 };
-
 
 const updatePointsDisplay = () => {
     const pointsDisplay = document.getElementById("pointsDisplay");
