@@ -694,10 +694,15 @@ const resetGame = () => {
 };
 
 const updatePointsDisplay = () => {
+    if (!gamePlaying) return;
+
     const pointsDisplay = document.getElementById("pointsDisplay");
     const pointsProgress = document.getElementById("pointsProgress");
+
+    //update level info 
     document.getElementById("levelDisplay").textContent = `Level ${gameState.level}`;
 
+    //update score 
     gameState.points = Math.max(gameState.points, 0);
     const maxPoints = levels[gameState.currentLevelIndex].points;
     pointsProgress.max = maxPoints;
@@ -705,27 +710,14 @@ const updatePointsDisplay = () => {
     pointsProgress.value = gameState.points;
     pointsDisplay.textContent = `Points: ${gameState.points}`;
 
-    if (gameState.level === 4) {
-        levelDisplay.style.display = "none";
-    } else {
-        levelDisplay.style.display = "block";
-        levelDisplay.textContent = `Level ${gameState.level}`;
-    }
-
-    //checken wnr naar next level
+    //checken wanneer naar next level
     if (gameState.points <= 0 && gameState.currentLevelIndex < levels.length - 1) {
-        // 3 seconden wachten vooraleer naar next level zodat UI kan updaten 
+        //seconde wachten vooraleer naar next level zodat UI kan updaten 
         setTimeout(() => {
-            nextLevel();
-        }, 1000);
+            playLevelTransition();
+        }, 500);
     } else if (gameState.currentLevelIndex === levels.length - 1) {
-        document.getElementById("gameWinnaar").style.display = "block";
-
-        clearInterval(timerInterval);
-        gameState.timerActive = false;
-        setTimeout(() => {
-            resetGame();
-        }, 5000);
+        handleGameEnd();
     }
 };
 
