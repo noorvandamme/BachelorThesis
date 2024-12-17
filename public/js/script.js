@@ -902,10 +902,29 @@ const playTransitionLevel1 = () => {
     });
 }
 
-const handleMonsterSelection = (monster) => {
-    selectedMonster = monster;
-    console.log(`${monster} gekozen`);
-    startGame();
+
+const handleMonsterSelection = (buttonId) => {
+
+    //DEMO WITHOUT ARDUINO
+    gamePlaying = true
+    // if (buttonId === 'monster1') {
+    //     selectedMonster = 'monster1';
+    //     console.log('enemy 1 gekozen')
+    // } else if (buttonId === 'monster2') {
+    //     selectedMonster = 'monster2';
+    //     console.log('enemy 2 gekozen')
+    // }
+
+    if (buttonId === 'button1') {
+        selectedMonster = 'monster1';
+        console.log('enemy 1 gekozen')
+    } else if (buttonId === 'button2') {
+        selectedMonster = 'monster2';
+        console.log('enemy 2 gekozen')
+    }
+    $startScreen.style.display = "none"
+
+    playTransitionAnimation();
 };
 
 const initMonsterSelection = () => {
@@ -920,8 +939,6 @@ const initMonsterSelection = () => {
 
 // Call this function during initialization
 initMonsterSelection();
-
-
 
 const displaySupportedState = () => {
     if (hasWebSerial) {
