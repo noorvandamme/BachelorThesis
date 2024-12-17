@@ -798,6 +798,35 @@ const nextLevel = () => {
     }
 }
 
+const footScene = () => {
+    if (transitionPlaying) return;
+    footPlayed = true
+    footPlaying = true
+
+    const footSound = new Audio('assets/intro-sound.mp3');
+    footSound.play();
+
+    let selectAnimation = animations.footPlayer1
+    if (selectedMonster === 'monster1') {
+        selectAnimation = animations.footPlayer1
+        $footContainer1.style.display = "flex";
+    } else if (selectedMonster === 'monster2') {
+        selectAnimation = animations.footPlayer2
+        $footContainer2.style.display = "flex";
+    }
+
+    selectAnimation.goToAndStop(0, true);
+    selectAnimation.play();
+
+    selectAnimation.addEventListener('complete', () => {
+        playTransitionLevel1();
+        $footContainer1.style.display = "none";
+        $footContainer2.style.display = "none";
+
+        footPlaying = false;
+    });
+};
+
 const handleMonsterSelection = (monster) => {
     selectedMonster = monster;
     console.log(`${monster} gekozen`);
