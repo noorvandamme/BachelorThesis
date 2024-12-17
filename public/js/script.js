@@ -864,6 +864,44 @@ const playLevelTransition = () => {
     });
 };
 
+const playTransitionAnimation = () => {
+    if (transitionPlaying) return;
+    transitionPlaying = true;
+
+    $transitionContainer.style.display = "flex";
+
+    animations.transitionPlayer.goToAndStop(0, true);
+    animations.transitionPlayer.play();
+    animations.transitionPlayer.addEventListener('complete', () => {
+        $transitionContainer.style.display = "none";
+        transitionPlaying = false;
+
+        footScene();
+    });
+};
+
+const playTransitionLevel1 = () => {
+    if (transitionPlaying) return;
+    if (!gamePlaying) return;
+
+    transitionPlaying = true;
+
+    $gameScreen.style.display = "none"
+    $level1TransitionContainer.style.display = "block";
+
+    animations.transitionLevel1.goToAndStop(0, true);
+    animations.transitionLevel1.play();
+
+    const sound = new Audio('assets/levelup.mp3');
+    sound.play();
+
+    animations.transitionLevel1.addEventListener('complete', () => {
+        $level1TransitionContainer.style.display = "none";
+        startGame();
+        transitionPlaying = false;
+    });
+}
+
 const handleMonsterSelection = (monster) => {
     selectedMonster = monster;
     console.log(`${monster} gekozen`);
