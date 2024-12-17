@@ -76,6 +76,46 @@ const $startRevealAnimation = document.querySelector(".start__title--animation")
 const $startTitleImage = document.querySelector(".start__title--image");
 $startRevealAnimation.style.display = "none"
 
+const loadLottieAnimation = ({ container, path }) =>
+    lottie.loadAnimation({
+        container,
+        renderer: 'svg',
+        loop: false,
+        autoplay: false,
+        path,
+    });
+
+const animations = {
+    transitionPlayer: loadLottieAnimation({
+        container: document.getElementById('lottie-animation'),
+        path: 'https://lottie.host/548d045f-bd88-4b62-8835-b02cc4bc11da/iEhg4NT9Qr.json',
+    }),
+    footPlayer1: loadLottieAnimation({
+        container: $footContainer1,
+        path: 'https://lottie.host/f1f71a76-5b8f-4d8b-a287-06644e5b777b/DUrJNLnDXl.json',
+    }),
+    footPlayer2: loadLottieAnimation({
+        container: $footContainer2,
+        path: 'https://lottie.host/c4887fe8-09d2-44da-b5b6-b7e61aa54f61/oQJuw6AhqD.json',
+    }),
+    revealStart: loadLottieAnimation({
+        container: $animationCruncher,
+        path: 'https://lottie.host/e098f130-0d01-4396-acc0-d9ebe75a6a4d/zerVhZMzwP.json',
+    }),
+    revealStart2: loadLottieAnimation({
+        container: $animationMuncher,
+        path: 'https://lottie.host/fef76a33-4854-4faa-85a9-705fcadb0d02/dB4Kb30GSV.json',
+    }),
+    revealStartTitle: loadLottieAnimation({
+        container: $startRevealAnimation,
+        path: 'https://lottie.host/960e2f34-0ea7-4565-98fc-778164d042c4/Jxn7Q1BqTu.json',
+    }),
+    transitionLevel1: loadLottieAnimation({
+        container: $level1TransitionContainer,
+        path: 'https://lottie.host/f97390a3-e23b-4a2f-8d63-d5bcdbead272/uFxBgLYzGt.json',
+    }),
+};
+
 const arduinoInfo = {
     usbProductId: 32823,
     usbVendorId: 9025
@@ -88,7 +128,7 @@ const init = async () => {
 
     initMonsterSelection();
     startGame();
-   
+
     navigator.serial.addEventListener('connect', (e) => {
         const port = e.target;
         const info = port.getInfo();
@@ -181,9 +221,9 @@ const connect = async (port) => {
                     const json = JSON.parse(value.trim());
 
                     //if (json.button) {
-                        processButtonState(value);
+                    processButtonState(value);
                     //} else if (json.sensor !== undefined && json.state) {
-                        //processSensorState(value);
+                    //processSensorState(value);
                     //}
                 }
             }
