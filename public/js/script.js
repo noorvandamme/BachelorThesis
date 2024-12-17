@@ -222,8 +222,8 @@ const connect = async (port) => {
     isConnected = true;
     displayConnectionState();
 
-     //ontgrendel audio met connect button 
-     if (!isAudioUnlocked) {
+    //ontgrendel audio met connect button 
+    if (!isAudioUnlocked) {
         try {
             if (!backgroundSound) {
                 backgroundSound = new Audio('assets/backgroundmusic_Stiller.mp3');
@@ -270,11 +270,11 @@ const connect = async (port) => {
                 if (value) {
                     const json = JSON.parse(value.trim());
 
-                    //if (json.button) {
-                    processButtonState(value);
-                    //} else if (json.sensor !== undefined && json.state) {
-                    //processSensorState(value);
-                    //}
+                    if (json.button) {
+                        processButtonState(value);
+                    } else if (json.sensor !== undefined && json.state) {
+                        processSensorState(value);
+                    }
                 }
             }
         } catch (error) {
@@ -285,85 +285,133 @@ const connect = async (port) => {
     }
 };
 
-const levelAnimations = {
-    monster1: {
-        1: 'https://lottie.host/e4e0a1a5-a947-4840-8811-f4d69636128c/eArUA3TbYf.json',
-        2: 'https://lottie.host/49838bde-6c15-40a3-8080-3beb70d97324/v0JrBmYqQQ.json',
-        3: 'https://lottie.host/a50b5754-4764-451b-a300-e4a5fd50f4f0/2nCmcY8sR3.json',
-    },
-    monster2: {
-        1: 'https://lottie.host/8ba859a8-2f5a-42cd-8282-adfc6c30b667/TTbjkMLUtA.json',
-        2: 'https://lottie.host/916617e4-d473-4443-b7d3-8edeca5264dc/fyqJQOdDff.json',
-        3: 'https://lottie.host/387c93cc-b37a-49cc-86e1-24852c88e8e5/1xHuigzBkt.json',
-    },
-};
-
 const processSensorState = (value) => {
-
-    //geen weizigingen meer aanbrengen wnr spel gedaan is
+    if (footPlaying) return;
+    if (!gamePlaying) return;
+    if (transitionPlaying) return;
     if (gameState.level === 4) return;
 
     const effects = [
         {
-            animationUrl: 'https://lottie.host/8dc6fc1a-4a34-4c08-8279-702325733220/rrCjUfAS99.json',
-            points: 20
+            animationUrl: 'https://lottie.host/b44cf3e3-ee4f-4118-8cbc-6182b90178e0/crQIiQbzlB.json',
+            points: 30,
+            soundUrl: 'assets/sparkle.mp3',
         },
         {
-            animationUrl: 'https://lottie.host/a729197f-ad16-4235-b2e8-3e543f62be78/ZkLKUVklVx.json',
-            points: 30
+            animationUrl: 'https://lottie.host/ee443e85-635a-4f9d-8c68-2a73f0200651/sSQMUAU6T1.json',
+            points: 10,
+            soundUrl: 'assets/waterStronger.mp3',
         },
         {
             animationUrl: 'https://lottie.host/3c0bb1f0-4449-4d9f-b412-4f686e4e4479/acvDxGal1i.json',
-            points: 40
+            points: 40,
+            soundUrl: 'assets/explosion.mp3',
         },
         {
-            animationUrl: 'https://lottie.host/43891e4d-6267-4813-b9ea-5a6b5bcf0914/h7ukx8Y8Bo.json',
-            points: 10
+            animationUrl: 'https://lottie.host/5293b4e0-55df-450c-9ecb-9d89cfa2db6e/fiF4b3ypTo.json',
+            points: 20,
+            soundUrl: 'assets/smoke.mp3',
         }
-    ]
+    ];
 
     try {
         //parse de JSON-string die we van de Arduino krijgen
         const data = JSON.parse(value);
 
-        //console.log("Parsed data:", data);
-        //console.log(data.sensor)
-        //console.log(data.state)
-
         let sensor = data.sensor;
         let sensorState = data.state;
+
         console.log("Parsed data:", value);
-        console.log("sensor:", data.sensor)
+        console.log("sensor:", data.sensor);
 
         if (sensorState === "Broken") {
-            console.log("broken")
+            console.log("broken");
             currentState = "broken";
         } else if (sensorState === "Unbroken" && currentState === "broken") {
-            // => betekent dat state van broken naar unbroken is gegaan 
-
-            const animation = effects[sensor];
-            if (animation) {
+            //state is van "Broken" naar "Unbroken" gegaan
+            const effect = effects[sensor];
+            if (effect) {
                 const container = document.getElementById('effect-container');
 
                 if (container.animation) container.animation.destroy();
 
                 container.style.display = 'block';
 
+                const sound = new Audio(effect.soundUrl);
+                sound.play();
+
                 container.animation = lottie.loadAnimation({
                     container: container,
                     renderer: 'svg',
                     loop: false,
                     autoplay: true,
-                    path: animation.animationUrl
+                    path: effect.animationUrl,
                 });
 
-                gameState.points -= animation.points;
+                gameState.points -= effect.points;
+                updatePointsDisplay();
 
+                container.animation.addEventListener('complete', () => {
+                    updateLevelAnimation(gameState.level);
+                });
+
+                if (isBackgroundAnimationPlaying) return;
+
+                isBackgroundAnimationPlaying = true;
+
+                //effect scherm aanpassen
+                const effectScreenAnimation1 = document.querySelector('.effect__screen--animations--1');
+                const effectScreenAnimation2 = document.querySelector('.effect__screen--animations--2');
+                effectScreenAnimation1.style.display = 'block';
+                effectScreenAnimation2.style.display = 'block';
+
+                const backgroundAnimation1 = lottie.loadAnimation({
+                    container: effectScreenAnimation1,
+                    renderer: 'svg',
+                    loop: false,
+                    autoplay: true,
+                    path: 'https://lottie.host/0c64c3f9-cbd9-408a-9c91-8610a8c0fde3/lbKnFNzij8.json',
+                });
+
+                const backgroundAnimation2 = lottie.loadAnimation({
+                    container: effectScreenAnimation2,
+                    renderer: 'svg',
+                    loop: false,
+                    autoplay: true,
+                    path: 'https://lottie.host/0c64c3f9-cbd9-408a-9c91-8610a8c0fde3/lbKnFNzij8.json',
+                });
+
+                backgroundAnimation1.goToAndStop(0, true);
+                backgroundAnimation1.play();
+
+                backgroundAnimation2.goToAndStop(0, true);
+                backgroundAnimation2.play();
+
+                const screenInterface = document.querySelector('.screen__interface');
+                const hiddenElements = Array.from(screenInterface.children).filter(child => {
+                    if (!child.classList.contains('game__animations') &&
+                        !child.classList.contains('effect__screen--animations--1') &&
+                        !child.classList.contains('effect__screen--animations--2')) {
+                        child.style.display = 'none';
+                        return child;
+                    }
+                });
+
+                const resetAnimation = () => {
+                    hiddenElements.forEach(child => child.style.display = 'block');
+                    effectScreenAnimation1.style.display = 'none';
+                    effectScreenAnimation2.style.display = 'none';
+                    backgroundAnimation1.destroy();
+                    backgroundAnimation2.destroy();
+                    isBackgroundAnimationPlaying = false; // Reset de lock
+                };
+
+                backgroundAnimation1.addEventListener('complete', resetAnimation);
+                backgroundAnimation2.addEventListener('complete', resetAnimation);
+
+                screenInterface.querySelector('.game__animations').style.display = 'block';
             }
         }
-
-        updatePointsDisplay();
-
     } catch (error) {
         console.error("Failed to parse JSON:", error);
     }
