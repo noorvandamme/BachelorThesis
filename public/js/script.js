@@ -490,20 +490,28 @@ const startTimer = () => {
     gameState.timerActive = true;
 
     timerInterval = setInterval(() => {
-        if (gameState.timeLeft > 0) {//als er tijd over is 
+        if (gameState.timeLeft > 0) { //als er tijd over is 
             gameState.timeLeft--;
+
+            if (gameState.timeLeft <= 10) {
+                timerDisplay.classList.add("red-timer");
+                timerDisplay.classList.add("timer__animation");
+            } else {
+                timerDisplay.classList.remove("red-timer");
+                timerDisplay.classList.remove("timer__animation");
+            }
 
             //min and sec 
             const minutes = Math.floor(gameState.timeLeft / 60);
             const seconds = gameState.timeLeft % 60;
 
-            document.getElementById("timerDisplay").textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            document.getElementById("timerDisplay").textContent = `0${minutes}:${seconds.toString().padStart(2, '0')}`;
         } else {//geen tijd meer over 
             clearInterval(timerInterval); //stop timer
             gameState.timerActive = false;
-            handleGameOver(); //gameover 
+            handleGameEnd();
         }
-    }, 1000); // update seconden 
+    }, 1000); //update seconden 
 }
 
 // const resetTimer = () => {
