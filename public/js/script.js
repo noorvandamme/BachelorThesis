@@ -24,6 +24,12 @@ let monsterName = "";
 let winnerTransition;
 let loserTransition;
 
+const time = 30;
+const levelTransition = {
+    1: 'https://lottie.host/de8fa9ec-b640-4882-9bd2-ec15a966268f/aGPMSLZBIk.json',
+    2: 'https://lottie.host/a06e2e4e-1c90-4922-a2bf-a60795e11032/txJeE3vkvt.json',
+};
+
 const gameState = {
     level: 1,
     points: 0,
