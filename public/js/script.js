@@ -53,6 +53,29 @@ const $connected = document.getElementById("connected");
 const $connectButton = document.getElementById("connectButton");
 const $irSensorState = document.getElementById("irSensorState");
 
+
+const $startScreen = document.querySelector(".start__screen");
+const $gameScreen = document.querySelector(".game__screen");
+const $gameEnd = document.querySelector(".game__end");
+
+const $imageCruncher = document.querySelector(".image--character1");
+const $selectedImageCruncher = document.querySelector(".image--character1--selected");
+const $animationCruncher = document.querySelector(".animation--character1");
+
+const $animationMuncher = document.querySelector(".animation--character2");
+const $imageMuncher = document.querySelector(".image--character2");
+const $selectedImageMuncher = document.querySelector(".image--character2--selected");
+
+const $transitionContainer = document.querySelector(".transition__screen");
+const $footContainer1 = document.querySelector(".foot__container--1");
+const $footContainer2 = document.querySelector(".foot__container--2");
+const $levelTransitionContainer = document.querySelector(".transition__animation--level");
+const $level1TransitionContainer = document.querySelector(".transition__animation--level1");
+
+const $startRevealAnimation = document.querySelector(".start__title--animation");
+const $startTitleImage = document.querySelector(".start__title--image");
+$startRevealAnimation.style.display = "none"
+
 const arduinoInfo = {
     usbProductId: 32823,
     usbVendorId: 9025
