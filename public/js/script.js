@@ -753,12 +753,14 @@ const getMonsterAnimation = (monsterName, level, hp) =>  {
 }
 
 const updateLevelAnimation = (level) => {
+    if (!gamePlaying) return;
+
     destroyCurrentAnimation();
 
-    //juiste animation voor juiste level
-    const animationPath = levelAnimations[selectedMonster][level];
+    //juiste animatie selecteren op basis van punten 
+    let animationPath = getMonsterAnimation(selectedMonster, level, gameState.points);
 
-    //checken of er een animation is geselecteerd
+    //check of er animatie is geselecteerd en laad deze in
     if (animationPath) {
         currentLevelAnimation = lottie.loadAnimation({
             container: document.getElementById('level-animation-container'),
