@@ -576,6 +576,41 @@ const handleGameEnd = () => {
     }
 };
 
+const playCredits = () => {
+    if (gamePlaying) return;
+    document.querySelector(".transition__end").style.display = 'none'
+    $gameEnd.style.display = "flex";
+    if (selectedMonster === "monster1") {
+        monsterName = "Cruncher"
+    } else monsterName = "Muncher";
+
+    const winnaarText = document.querySelector(".role__person--winner");
+    const loserText = document.querySelector(".role__person--loser");
+    const monsterText = document.querySelector(".role__person--monster");
+
+    monsterText.textContent = `${monsterName}`;
+
+    if (gameState.points <= 0) {
+
+        document.querySelector(".game__winnaar").style.display = "block";
+        $gameScreen.style.display = "none"
+        console.log('winnaar')
+        winnaarText.textContent = 'Jij';
+        loserText.textContent = `${monsterName}`;
+
+    } else if (gameState.points > 0) {
+        document.querySelector(".game__over").style.display = "flex";
+        $gameScreen.style.display = "none";
+        console.log('gameover')
+        winnaarText.textContent = `${monsterName}`;
+        loserText.textContent = 'Jij';
+    }
+
+    setTimeout(() => {
+        resetGame();
+    }, 10000);
+}
+
 //reset spel voor nieuwe speler
 const resetGame = () => {
     gameState.level = 1;
