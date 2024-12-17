@@ -514,11 +514,11 @@ const startTimer = () => {
     }, 1000); //update seconden 
 }
 
-// const resetTimer = () => {
-//   gameState.timeLeft = 60;
-//   gameState.timerActive = false;
-//   document.getElementById("timerDisplay").textContent = `Time Left: ${gameState.timeLeft}s`;
-// }
+const resetTimer = () => {
+    gameState.timeLeft = time;
+    gameState.timerActive = false;
+    document.getElementById("timerDisplay").textContent = `${gameState.timeLeft}s`;
+}
 
 const handleGameOver = () => {
     //level instellen op level 4 
