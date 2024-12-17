@@ -116,6 +116,44 @@ const animations = {
     }),
 };
 
+const levelAnimationsWithPoints = {
+    monster1: {
+        1: {
+            34: 'https://lottie.host/19679a60-a111-4dd0-856f-066907769a48/UnYV64c0iT.json',//state 1 (-34)
+            18: 'https://lottie.host/91762797-c81c-4c40-a53c-62331474bf84/8URX15niqk.json',//state 2 (34-18)
+            0: 'https://lottie.host/e88a5e44-2477-4eb8-a947-05b1a908758f/CRDLf2bQwI.json',//state 3 (18-0)
+        },
+        2: {
+            67: 'https://lottie.host/8cdf3599-4f5b-40fa-a0cb-3b6f4af76f9c/uhR9qibePP.json',
+            34: 'https://lottie.host/bd581f17-aaea-4641-bad7-1a041fe18c49/s4ybPbWNrK.json',
+            0: 'https://lottie.host/8d16dcf4-12fc-4eb9-a5e6-d4a6b6a615c5/ek8da0dorl.json',
+        },
+        3: {
+            100: 'https://lottie.host/36f21aee-77ee-485d-ac8e-7e85c343abdd/fGD4Ht3YfT.json',
+            50: 'https://lottie.host/23c1c717-8c4a-4a69-877a-267514a80513/2uecOkVTLW.json',
+            0: 'https://lottie.host/85eadd4e-4958-430b-8428-650ee2fbfe87/BWYfCg6iCN.json',
+
+        }
+    },
+    monster2: {
+        1: {
+            34: 'https://lottie.host/2839362c-c8fa-4f3a-8ab4-14a426c2b343/fMa15mSuAz.json',
+            18: 'https://lottie.host/4abb9bb8-3196-42f1-b7a9-845f5eb57f2e/DZnHgwFnr8.json',
+            0: 'https://lottie.host/ccd07379-d28c-4378-b729-583b704cd026/UAUDAchMKl.json',
+        },
+        2: {
+            67: 'https://lottie.host/4bf3249f-fe8a-4fe1-bf34-ee2548aa808c/ZmuF7EDCJS.json',
+            34: 'https://lottie.host/201c6a97-993d-44de-8187-f56bbc98e9be/tby0eju8oH.json',
+            0: 'https://lottie.host/3973fab6-3a33-4dd3-a35c-9290e8176a6f/B96sAzRR5I.json',
+        },
+        3: {
+            100: 'https://lottie.host/69a53502-7c82-41d1-b304-2de1bea921d4/SoS84jyRod.json',
+            50: 'https://lottie.host/2075f2c4-4f72-4acc-83a0-df4c2a952080/lCVCkKenIb.json',
+            0: 'https://lottie.host/4d2d3ab0-4b33-4a2c-8e46-1820b5d798fc/GZaD2D9WEu.json',
+        }
+    },
+};
+
 const arduinoInfo = {
     usbProductId: 32823,
     usbVendorId: 9025
