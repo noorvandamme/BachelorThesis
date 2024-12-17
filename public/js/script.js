@@ -728,7 +728,7 @@ const destroyCurrentAnimation = () => {
     }
 };
 
-const getMonsterAnimation = (monsterName, level, hp) =>  {
+const getMonsterAnimation = (monsterName, level, hp) => {
     const monsterData = levelAnimationsWithPoints[monsterName];
     if (!monsterData) {
         console.log("Monster not found.");
@@ -824,6 +824,43 @@ const footScene = () => {
         $footContainer2.style.display = "none";
 
         footPlaying = false;
+    });
+};
+
+const playLevelTransition = () => {
+    if (transitionPlaying) return;
+    transitionPlaying = true;
+
+    const nextLevelIndex = gameState.level;
+    console.log(gameState.level)
+
+    const animationPath = levelTransition[nextLevelIndex];
+
+    if (!animationPath) {
+        nextLevel();
+        return;
+    }
+
+    const sound = new Audio('assets/levelup.mp3');
+    sound.play();
+
+    $gameScreen.style.display = "none"
+    $levelTransitionContainer.style.display = "flex";
+
+    const levelAnimation = lottie.loadAnimation({
+        container: $levelTransitionContainer,
+        renderer: 'svg',
+        loop: false,
+        autoplay: true,
+        path: animationPath,
+    });
+
+    levelAnimation.addEventListener('complete', () => {
+        $levelTransitionContainer.style.display = "none";
+        levelAnimation.destroy();
+        transitionPlaying = false;
+
+        nextLevel();
     });
 };
 
