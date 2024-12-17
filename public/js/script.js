@@ -466,34 +466,23 @@ const processButtonState = (value) => {
     }
 };
 
-// const handleButtonPressed = (buttonId) => {
-//     const gameScreen = document.getElementById("game-screen");
-
-//     if (buttonId === 'button1') {
-//         selectedMonster = 'monster1';
-
-//         console.log('enemy 1 gekozen')
-//     } else if (buttonId === 'button2') {
-//         selectedMonster = 'monster2';
-//         console.log('enemy 2 gekozen')
-//     }
-
-//     startGame();
-// }
-
 const startGame = () => {
-    document.getElementById("start-screen").style.display = "none";
-    document.getElementById("game-screen").style.display = "block";
+    gamePlaying = true
+
+    $startScreen.style.display = "none"
+    $gameScreen.style.display = "block"
+    $transitionContainer.style.display = "none";
 
     gameState.level = 1; // starten met level 1 
     gameState.points = levels[0].points;
-    gameState.timeLeft = 60;
+    gameState.timeLeft = time;
     gameState.currentLevelIndex = 0;
 
     updatePointsDisplay();
     updateLevelAnimation(1)
-
     startTimer();
+
+    backgroundSound.play();
 }
 
 const startTimer = () => {
