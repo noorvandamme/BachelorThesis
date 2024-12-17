@@ -721,8 +721,6 @@ const updatePointsDisplay = () => {
     }
 };
 
-
-
 const destroyCurrentAnimation = () => {
     if (currentLevelAnimation) {
         currentLevelAnimation.destroy();
@@ -730,6 +728,29 @@ const destroyCurrentAnimation = () => {
     }
 };
 
+const getMonsterAnimation = (monsterName, level, hp) =>  {
+    const monsterData = levelAnimationsWithPoints[monsterName];
+    if (!monsterData) {
+        console.log("Monster not found.");
+        return;
+    }
+
+    const levelData = monsterData[level];
+    if (!levelData) {
+        return;
+    }
+
+    //zoek de animatie door de HP-drempels
+    const hpThresholds = Object.keys(levelData).map(Number).sort((a, b) => b - a);
+    let chosenAnimation = levelData[hpThresholds[hpThresholds.findIndex(threshold => hp >= threshold)]];
+
+    //als geen drempel overeenkomt (hp < laagste drempel), geef de animatie voor 0 HP
+    if (!chosenAnimation) {
+        chosenAnimation = levelData[0];
+    }
+
+    return chosenAnimation;
+}
 
 const updateLevelAnimation = (level) => {
     destroyCurrentAnimation();
