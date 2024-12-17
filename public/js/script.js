@@ -420,8 +420,10 @@ const processSensorState = (value) => {
 let buttonStates = {}; //actieve staat van knop bijhouden 
 
 const processButtonState = (value) => {
+    if (gamePlaying) return;
+    if (transitionPlaying) return;
     try {
-        // Parse de JSON-string van de knop
+        //parse de JSON-string van de knop
         const buttonData = JSON.parse(value.trim());
 
         if (buttonData.button) {
@@ -431,7 +433,31 @@ const processButtonState = (value) => {
             if (!buttonStates[buttonId]) {
                 buttonStates[buttonId] = true;
                 console.log("button pressed:", buttonId)
-                //handleButtonPressed(buttonId);
+                if (buttonId === 'button1') {
+                    $imageCruncher.style.display = "none"
+                    $selectedImageCruncher.style.display = "block"
+                    const clickSound = new Audio('assets/click1.mp3');
+                    clickSound.play();
+                    if (backgroundSound) backgroundSound.pause();
+
+                    setTimeout(() => {
+                        handleMonsterSelection(buttonId);
+
+                    }, 500);
+
+                }
+
+                if (buttonId === 'button2') {
+                    $imageMuncher.style.display = "none"
+                    $selectedImageMuncher.style.display = "block"
+                    const clickSound = new Audio('assets/click1.mp3');
+                    clickSound.play();
+                    if (backgroundSound) backgroundSound.pause();
+
+                    setTimeout(() => {
+                        handleMonsterSelection(buttonId);
+                    }, 700);
+                }
             }
         }
 
