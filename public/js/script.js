@@ -772,19 +772,25 @@ const updateLevelAnimation = (level) => {
     }
 };
 
+
 const nextLevel = () => {
+    if (!gamePlaying) return;
+
     if (gameState.currentLevelIndex < levels.length - 1) {
+        $gameScreen.style.display = "block"
         gameState.currentLevelIndex++;
         gameState.level++;
         gameState.points = levels[gameState.currentLevelIndex].points;
-        //resetTimer(); -> OPTIE 
+        resetTimer();
         updatePointsDisplay();
         updateLevelAnimation(gameState.level)
+
         const iconsContainer = document.querySelector('.screen__icons div');
         const icons = iconsContainer.querySelectorAll('img');
 
-        if (icons.length > gameState.level - 1) {
-            icons[gameState.level - 1].style.display = 'none';
+        if (icons.length >= gameState.level) {
+            const iconToReplace = icons[gameState.level - 1];
+            iconToReplace.src = 'assets/iconRed.png';
         }
 
     } else {
