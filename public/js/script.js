@@ -1,7 +1,28 @@
 
-// App state
 const hasWebSerial = "serial" in navigator;
+
 let isConnected = false;
+let timerInterval;
+let footPlayed = false;
+let gamePlaying = false;
+let level1Done = false
+let transitionPlaying = false
+let isBackgroundAnimationPlaying = false;
+let currentState = "unbroken";
+let currentLevelAnimation = null;
+let isAudioUnlocked = false;
+let selectedMonster = 'monster1';
+let footPlaying = false;
+let backgroundSound;
+
+let soundInterval;
+let connectedArduinoPorts = [];
+let winner = "";
+let loser = "";
+let monsterName = "";
+
+let winnerTransition;
+let loserTransition;
 
 const gameState = {
     level: 1,
@@ -18,8 +39,6 @@ const levels = [
     { level: 4, points: 0 }
 ];
 
-let timerInterval;
-
 const $notSupported = document.getElementById("not-supported");
 const $supported = document.getElementById("supported");
 const $notConnected = document.getElementById("not-connected");
@@ -32,12 +51,15 @@ const arduinoInfo = {
     usbProductId: 32823,
     usbVendorId: 9025
 };
-let connectedArduinoPorts = [];
 
 const init = async () => {
     displaySupportedState();
     if (!hasWebSerial) return;
     displayConnectionState();
+
+    initMonsterSelection();
+    startGame();
+   
     navigator.serial.addEventListener('connect', (e) => {
         const port = e.target;
         const info = port.getInfo();
@@ -129,11 +151,11 @@ const connect = async (port) => {
                 if (value) {
                     const json = JSON.parse(value.trim());
 
-                    if (json.button) {
+                    //if (json.button) {
                         processButtonState(value);
-                    } else if (json.sensor !== undefined && json.state) {
-                        processSensorState(value);
-                    }
+                    //} else if (json.sensor !== undefined && json.state) {
+                        //processSensorState(value);
+                    //}
                 }
             }
         } catch (error) {
@@ -143,12 +165,6 @@ const connect = async (port) => {
         }
     }
 };
-
-
-let currentState = "unbroken"; //current sensor state 
-
-let currentLevelAnimation = null;
-let selectedMonster = 'monster1';
 
 const levelAnimations = {
     monster1: {
@@ -248,7 +264,7 @@ const processButtonState = (value) => {
             if (!buttonStates[buttonId]) {
                 buttonStates[buttonId] = true;
                 console.log("button pressed:", buttonId)
-                handleButtonPressed(buttonId);
+                //handleButtonPressed(buttonId);
             }
         }
 
@@ -257,20 +273,20 @@ const processButtonState = (value) => {
     }
 };
 
-const handleButtonPressed = (buttonId) => {
-    const gameScreen = document.getElementById("game-screen");
+// const handleButtonPressed = (buttonId) => {
+//     const gameScreen = document.getElementById("game-screen");
 
-    if (buttonId === 'button1') {
-        selectedMonster = 'monster1';
+//     if (buttonId === 'button1') {
+//         selectedMonster = 'monster1';
 
-        console.log('enemy 1 gekozen')
-    } else if (buttonId === 'button2') {
-        selectedMonster = 'monster2';
-        console.log('enemy 2 gekozen')
-    }
+//         console.log('enemy 1 gekozen')
+//     } else if (buttonId === 'button2') {
+//         selectedMonster = 'monster2';
+//         console.log('enemy 2 gekozen')
+//     }
 
-    startGame();
-}
+//     startGame();
+// }
 
 const startGame = () => {
     document.getElementById("start-screen").style.display = "none";
@@ -441,6 +457,26 @@ const nextLevel = () => {
         console.log("Winnaar");
     }
 }
+
+const handleMonsterSelection = (monster) => {
+    selectedMonster = monster;
+    console.log(`${monster} gekozen`);
+    startGame();
+};
+
+const initMonsterSelection = () => {
+    document.getElementById("chooseMonster1").addEventListener("click", () => {
+        handleMonsterSelection('monster1');
+    });
+
+    document.getElementById("chooseMonster2").addEventListener("click", () => {
+        handleMonsterSelection('monster2');
+    });
+};
+
+// Call this function during initialization
+initMonsterSelection();
+
 
 
 const displaySupportedState = () => {
