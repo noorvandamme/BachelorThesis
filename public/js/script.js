@@ -164,9 +164,6 @@ const init = async () => {
     if (!hasWebSerial) return;
     displayConnectionState();
 
-    initMonsterSelection();
-    startGame();
-
     navigator.serial.addEventListener('connect', (e) => {
         const port = e.target;
         const info = port.getInfo();
@@ -224,6 +221,21 @@ const handleClickConnect = async () => {
 const connect = async (port) => {
     isConnected = true;
     displayConnectionState();
+
+     //ontgrendel audio met connect button 
+     if (!isAudioUnlocked) {
+        try {
+            if (!backgroundSound) {
+                backgroundSound = new Audio('assets/backgroundmusic_Stiller.mp3');
+                backgroundSound.loop = true;
+                await backgroundSound.play();
+            }
+            console.log(isAudioUnlocked);
+            isAudioUnlocked = true;
+        } catch (error) {
+            console.warn("Audio ontgrendelen mislukt", error);
+        }
+    }
 
     await port.open({ baudRate: 9600 });
 
