@@ -520,19 +520,60 @@ const resetTimer = () => {
     document.getElementById("timerDisplay").textContent = `${gameState.timeLeft}s`;
 }
 
-const handleGameOver = () => {
-    //level instellen op level 4 
-    gameState.level = 4;
-    updatePointsDisplay();//update pointsdisplay naar game over 
-    clearInterval(gameState.timerInterval); // stop timer 
-    document.getElementById("gameOver").style.display = "block";
+const handleGameEnd = () => {
+    $gameScreen.style.display = "none"
+    document.querySelector(".transition__end").style.display = 'block'
+    clearInterval(timerInterval);//stoptimer
+    gameState.timerActive = false;
 
-    document.getElementById("level-animation-container").style.display = "none"
+    gamePlaying = false
 
+    if (gameState.points <= 0) {
+        if (winnerTransition) {
+            winnerTransition.destroy();
+        }
 
-    setTimeout(() => {
-        resetGame();
-    }, 5000);
+        console.log('winnaar')
+        document.querySelector(".transition__winner").style.display = "block"
+        winnerTransition = lottie.loadAnimation({
+            container: document.querySelector('.transition__winner'),
+            renderer: 'svg',
+            loop: false,
+            autoplay: true,
+            path: 'https://lottie.host/0b361482-2134-4eaf-bdd7-04d516288aad/uCKSEQkzMt.json',
+        });
+
+        winnerTransition.goToAndStop(0, true);
+        winnerTransition.play();
+
+        const gameWinnerSound = new Audio('assets/victory_nomusic.mp3');
+        gameWinnerSound.play();
+
+        winnerTransition.addEventListener('complete', playCredits);
+
+    } else if (gameState.points > 0) {
+        if (loserTransition) {
+            loserTransition.destroy();
+        }
+
+        document.querySelector(".transition__loser").style.display = "block"
+        console.log('verliezer')
+        loserTransition = lottie.loadAnimation({
+            container: document.querySelector('.transition__loser'),
+            renderer: 'svg',
+            loop: false,
+            autoplay: true,
+            path: 'https://lottie.host/16a73070-b9ec-477e-9310-bf824376d0f1/VZthi42TwX.json',
+        });
+
+        loserTransition.goToAndStop(0, true);
+        loserTransition.play();
+
+        const gameOverSound = new Audio('assets/gameOver_nomusic.mp3');
+        gameOverSound.play();
+
+        loserTransition.addEventListener('complete', playCredits);
+    }
 };
 
 //reset spel voor nieuwe speler
