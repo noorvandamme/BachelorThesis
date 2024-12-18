@@ -66,8 +66,6 @@ body {
     padding-bottom: 5vh;
 
     align-self: center;
-
-    /* position: relative; */
     z-index: 30;
 }
 
@@ -94,10 +92,6 @@ body {
     font-weight: 800;
     color: #FFF9C9;
     text-align: center;
-
-    /* small screen */
-    /* font-size: 4.5rem; */
-
     font-size: 6rem;
     text-transform: uppercase;
     letter-spacing: 1.4px;
@@ -109,8 +103,6 @@ body {
     font-weight: 100;
     color: #FFF9C9;
     text-align: center;
-    /* small screen */
-    /* font-size: 2rem; */
     font-size: 3rem;
     letter-spacing: 1px;
 }
@@ -125,7 +117,6 @@ body {
 .effect__screen--animations--1 {
     position: absolute;
     bottom: 0;
-    /* Plaatst het element onderaan */
     left: 0;
     width: 100%;
 }
@@ -133,7 +124,6 @@ body {
 .effect__screen--animations--2 {
     position: absolute;
     top: 0%;
-    /* Plaats boven het scherm */
     left: 0;
     transform: scale(-1, -1);
 }
@@ -202,16 +192,11 @@ body {
 }
 
 .level__icon{
-    /* max-width: 120px; */
     width: 120px;
-    /* small screen */
-    /* max-width: 80px; */
 }
 
 .game__level {
     font-size: 4rem;
-    /* small screen */
-    /* font-size: 1.5rem; */
     text-transform: uppercase;
     font-weight: 700;
     letter-spacing: 1.5px;
@@ -220,8 +205,6 @@ body {
 }
 
 .timer__number {
-    /* small screen */
-    /* font-size: 5rem; */
     font-size: 11rem;
     text-transform: uppercase;
     font-weight: 700;
@@ -281,16 +264,10 @@ body {
 
 #level-animation-container {
     display: block;
-    /* small screen */
-    /* padding-top: 18vh; */
-    /* padding-top: 50vh; */
     padding-top: 10vh;
 }
 
 #effect-container {
-    /* padding-top: 5vh; */
-    /* small screen */
-    /* padding-top: 10vh; */
     z-index: 1000;
 }
 
@@ -314,7 +291,6 @@ body {
     width: 100%;
     height: auto;
     text-align: center;
-    /* animation: scrollCredits var(--animation-duration, 10s) linear infinite; */
     animation: scrollCredits 18s linear infinite;
 
     z-index: 0;
