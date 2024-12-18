@@ -2,77 +2,138 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MontserPOP</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.10/lottie.min.js"></script>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/reset.css">
-  <link rel="stylesheet" href="https://use.typekit.net/mdg8xdv.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MontserPOP</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.10/lottie.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="https://use.typekit.net/mdg8xdv.css">
 </head>
 
 <body>
-  <div id="app">
-    <div id="not-supported">
-      Web Serial is not supported in this browser.
-    </div>
-    <div id="supported">
-      <div id="not-connected">
-        <button id="connectButton">Connect</button>
-      </div>
-      <div id="connected" style="display: none;">
-        <div class="hidden">Connected</div>
-        <div id="start-screen">
-          <img class="start__image image--title" src="assets/title.png" alt="monsterPOP">
-          <h1 class="hidden">monsterPOP</h1>
-          <div class="start__instruction">
-            <h2 class="instruction__firt">Kies je vijand</h2>
-            <div class="instruction__second">door op de knop te drukken</div>
-          </div>
-          <button id="chooseMonster1">Choose Monster 1</button>
-          <button id="chooseMonster2">Choose Monster 2</button>
-          <img src="assets/cruncher.png" alt="Cruncher" class="start__image image--character1">
-          <img src="assets/muncher.png" alt="Muncher" class="start__image image--character2">
+    <div id="app">
+        <div id="not-supported">
+            Web Serial is not supported in this browser.
         </div>
-        <div id="game-screen" style="display: none;">
-          <div class="screen__interface">
-            <div class="screen__top">
-              <div class="screen__icons">
-                <div>
-                  <img class="level__icon" src="assets/icon.png" alt="" width="80px">
-                  <img class="level__icon" src="assets/icon.png" alt="" width="80px">
-                  <img class="level__icon" src="assets/icon.png" alt="" width="80px">
+        <div id="supported">
+            <div id="not-connected">
+                <button id="connectButton">Connect</button>
+            </div>
+            <div id="connected" style="display: none;">
+                <div class="hidden">Connected</div>
+                <div class="start__screen" id="start-screen">
+                    <div class="start__top">
+                        <div class="start__title--animation"></div>
+                        <img class="start__image start__title--image" src="assets/title.png" alt="monsterPOP">
+                        <h1 class="hidden">monsterPOP</h1>
+                        <div class="start__instruction">
+                            <h2 class="instruction__firt">Kies je vijand</h2>
+                            <div class="instruction__second">door op de knop te drukken</div>
+                        </div>
+                    </div>
+                    <div class="start__bottom">
+                        <img src="assets/cruncher.png" alt="Cruncher" class="start__image image--character1">
+                        <img src="assets/character1state.png" alt="Cruncher"
+                            class="start__image image--character1--selected" style="display: none;">
+                        <div class="start__animation animation--character1" style="display: none;"></div>
+                        <img src="assets/muncher.png" alt="Muncher" class="start__image image--character2">
+                        <img src="assets/character2State.png" alt="Muncher"
+                            class="start__image image--character2--selected" style="display: none;">
+                        <div class="start__animation animation--character2" style="display: none;"></div>
+                    </div>
                 </div>
-              </div>
-              <div class="screen__level" id="levelDisplay">Level 1</div>
-              <div class="screen__timer" id="timer-container">
-                <p class="timer__number" id="timerDisplay"><svg width="24" height="24"
-                    xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd">
-                    <path
-                      d="M12 0c6.623 0 12 5.377 12 12s-5.377 12-12 12-12-5.377-12-12 5.377-12 12-12zm0 1c6.071 0 11 4.929 11 11s-4.929 11-11 11-11-4.929-11-11 4.929-11 11-11zm0 11h6v1h-7v-9h1v8z" />
-                  </svg>1min</p>
-              </div>
+                <div class="transition__screen" id="transition-container" style="display: none;">
+                    <div class="lottie-container" id="lottie-animation"></div>
+                </div>
+                <div class="foot__container--1" id="lottie-animation-foot" style="display: none;"></div>
+                <div class="foot__container--2" id="lottie-animation-foot" style="display: none;"></div>
+                <div class="transition__animation--level" style="display: none;"></div>
+                <div class="transition__animation--level1" style="display: none;"></div>
+                <div class="game__screen" id="game-screen" style="display: none;">
+                    <div class="screen__interface">
+                        <div class="screen__top">
+                            <div class="screen__icons">
+                                <div class="icon--character2">
+                                    <img class="level__icon" src="assets/iconRed.png" alt="">
+                                    <img class="level__icon" src="assets/icon.png" alt="">
+                                    <img class="level__icon" src="assets/icon.png" alt="">
+                                </div>
+                                <div class="icon--character1" style="display: none;"">
+                                    <img class=" level__icon" src="assets/iconRed2.png" alt="" width="60px">
+                                    <img class="level__icon" src="assets/icon2.png" alt="" width="60px">
+                                    <img class="level__icon" src="assets/icon2.png" alt="" width="60px">
+                                </div>
+                                <div class="screen__level" id="levelDisplay">Level 1</div>
+                            </div>
+                            <div class="screen__timer" id="timer-container">
+                                <p class="timer__number" id="timerDisplay">00:30</p>
+                            </div>
+                        </div>
+                        <div class="game__animations">
+                            <div class="animations__effect" id="effect-container" style="display: none;"></div>
+                            <div id="level-animation-container"></div>
+                        </div>
+                        <div class="effect__screen--animations--2"></div>
+                        <div class="effect__screen--animations--1"></div>
+                        <img class="screen__background" src="assets/background.png" alt="">
+                        <div class="game__points" id="points-container">
+                            <p class="hidden" id="pointsDisplay">Points: 10</p>
+                            <progress class="points__progress" id="pointsProgress" value="10" max="10"></progress>
+                        </div>
+                    </div>
+                </div>
+                <div class="transition__end" style="display: none;">
+                    <div class="transition__winner" style="display: none;"></div>
+                    <div class="transition__loser" style="display: none;"></div>
+                </div>
+                <div class="game__end" style="display: none;">
+                    <div class="game__over" id="gameOver" style="display: none;">
+                        <h2 class="hidden game__gameover">Game Over!</h2>
+                    </div>
+                    <div class="game__winnaar" id="gameWinnaar" style="display: none;">
+                        <h2 class="hidden game__winnaar">Winnaar!</h2>
+                    </div>
+                    <div class="credits-container">
+                        <div class="credits">
+                            <div class="role">
+                                <h2 class="role__title">Winnaar</h2>
+                                <h3 class="role__person role__person--winner"></h3>
+                            </div>
+                            <div class="role">
+                                <h2 class="role__title">Verliezer</h2>
+                                <h3 class="role__person role__person--loser"></h3>
+                            </div>
+                            <div class="role">
+                                <h2 class="role__title">Design</h2>
+                                <h3 class="role__person">Noor Vandamme</h3>
+                                <h3 class="role__person">Tiany Maegerman</h3>
+                            </div>
+                            <div class="role">
+                                <h2 class="role__title">Hoofdrollen</h2>
+                                <h3 class="role__person">Jij</h3>
+                                <h3 class="role__person role__person--monster">-</h3>
+                            </div>
+                            <div class="role">
+                                <h2 class="role__title">Geluidseffecten</h2>
+                                <h3 class="role__person">Tiany Maegerman</h3>
+                            </div>
+                            <div class="role">
+                                <h2 class="role__title">Developing</h2>
+                                <h3 class="role__person">Noor Vandamme</h3>
+                            </div>
+                            <div class="role">
+                                <h2 class="role__title">Speciale dank aan</h2>
+                                <h3 class="role__person">JEF</h3>
+                                <h3 class="role__person">Devine</h3>
+                            </div>
+                            <h2>Einde</h2>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="game__animations">
-              <div id="gameOver" style="display: none;">
-                <h2 class="game__gameover">Game Over!</h2>
-              </div>
-              <div id="gameWinnaar" style="display: none;">
-                <h2 class="game__winnaar">Winnaar!</h2>
-              </div>
-              <div id="effect-container" style="display: none; width: 600px; height: 600px;"></div>
-              <div id="level-animation-container" style="width: 600px; height: 600px;"></div>
-            </div>
-            <div class="game__points" id="points-container">
-              <p class="hidden" id="pointsDisplay">Points: 10</p>
-              <progress class="points__progress" id="pointsProgress" value="10" max="10"></progress>
-              <!-- Progress bar -->
-            </div>
-          </div>
         </div>
-      </div>
-    </div>
-  </div>
-  <script src="js/script.js"></script>
+        <script src="js/script.js"></script>
 </body>
+
 </html>
